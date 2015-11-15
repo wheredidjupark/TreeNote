@@ -82,15 +82,27 @@ $(document).ready(function() {
             $(this).siblings(".button").after($text);
             $(this).remove();
         }
-
-        save();
+        saveData();
     });
 
+    var timeoutId;
+    $(".button").hover(function() {
+        if (!timeoutId) {
+            var $this = $(this);
+            timeoutId = setTimeout(function() {
+                console.log("hovering");
+            }, 650);
 
+        }
 
-    $("#saveButton").click(function(e) {
-        e.preventDefault();
-        saveData();
+    }, function() {
+
+        if (timeoutId) {
+            console.log("leaving");
+            clearTimeout(timeoutId);
+            timeoutId = false;
+        }
+
     });
 
 });
