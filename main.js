@@ -91,7 +91,10 @@ $(document).ready(function() {
             var $this = $(this);
             timeoutId = setTimeout(function() {
                 console.log("hovering");
-            }, 650);
+
+                //turn the background grey
+                $this.closest(".node").css("background-color", "grey");
+            }, 500);
 
         }
 
@@ -101,6 +104,8 @@ $(document).ready(function() {
             console.log("leaving");
             clearTimeout(timeoutId);
             timeoutId = false;
+            //turn the background white
+            $(this).closest(".node").css("background-color", "white");
         }
 
     });
