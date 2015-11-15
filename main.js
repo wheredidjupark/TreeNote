@@ -13,11 +13,14 @@ $(document).ready(function() {
         return window.localStorage.getItem('appData');
     };
 
-    //the application initializes with a single node requiring an input.
-    if (getData()) {
-        $("#app").html("");
-        $("#app").append(getData());
-    }
+    var initialize = function() {
+        if (getData()) {
+            $("#app").html("");
+            $("#app").append(getData());
+        }
+    };
+
+    initialize();
 
     $("#app").on("keypress", ".form", function(e) {
         //when enter-key is pressed, it will create a node.
@@ -46,11 +49,17 @@ $(document).ready(function() {
             $node.append($childForm);
 
             $(this).before($node);
+            saveData();
 
-            $(this).remove();
         }
 
-        saveData();
+
+        // if (e.keyCode === KEY_DELETE && text.length === 0) {
+        //     e.preventDefault();
+        //     $(this).children("input").remove();
+        //     saveData();
+        // }
+
     });
 
     $("#app").on("click", ".button", function(e) {
@@ -75,14 +84,16 @@ $(document).ready(function() {
 
     $("#app").on("keypress", ".modifier", function(e) {
 
+        var text = $(this).children("input").val();
+
         if (e.keyCode === KEY_ENTER) {
             e.preventDefault();
-            var text = $(this).children("input").val();
             $text = $("<span>" + text + "</span>").addClass("text");
             $(this).siblings(".button").after($text);
             $(this).remove();
+            saveData();
         }
-        saveData();
+
     });
 
     var timeoutId;
@@ -92,8 +103,8 @@ $(document).ready(function() {
             timeoutId = setTimeout(function() {
                 console.log("hovering");
 
-                //turn the background grey
-                $this.closest(".node").css("background-color", "grey");
+                //turn the background grey (configure in CSS)
+                $this.closest(".node").addClass("highlight");
             }, 500);
 
         }
@@ -104,8 +115,8 @@ $(document).ready(function() {
             console.log("leaving");
             clearTimeout(timeoutId);
             timeoutId = false;
-            //turn the background white
-            $(this).closest(".node").css("background-color", "white");
+            //turn the background white (configure in CSS)
+            $(this).closest(".node").removeClass("highlight");
         }
 
     });
