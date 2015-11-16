@@ -62,10 +62,11 @@ $(document).ready(function() {
         }
 
         //DELETE: Remove the node. Focus on the previous node.
-        if (e.keyCode === KEY_DELETE && html.toString().length === 0) {
+        if (e.keyCode === KEY_DELETE && $(this).html().toString().length === 0) {
         	e.preventDefault();
         	var content = $(this).html();
         	$(this).prev().focus(); //the focus functionality should place the text cursor at the end of its content
+        	//http://stackoverflow.com/questions/499126/jquery-set-cursor-position-in-text-area
             $(this).remove();
         }
 
@@ -73,6 +74,8 @@ $(document).ready(function() {
         if(e.keyCode === KEY_TAB){
         }
 
+        //REVERSE TAB: Move the child node outside of its parent node(i.e. next)
+        //http://stackoverflow.com/questions/10655202/detect-multiple-keys-on-single-keypress-event-on-jquery 
         saveData();
 
 
