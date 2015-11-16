@@ -48,7 +48,7 @@ $(document).ready(function() {
 
     $("#app").on("keydown", ".task", function(e) {
 
-        console.log(e.keyCode);
+        // console.log("You pressed the key with the following keycode",e.keyCode);
         var textVal = $(this).text();
         var htmlVal = $(this).html();
         var $thisNode = $(this).closest(".node");
@@ -85,12 +85,26 @@ $(document).ready(function() {
 
         //LEFT ARROW + text bar at left-most side of the content
         if (e.keyCode === KEY_LEFTARROW) {
-        	//if the caret (text bar thing) is placed at leftmost side of the content, move to the 
+
+            console.log($(this).caret());
+            //if the caret (text bar thing) is placed at leftmost side of the content, move to the 
+            if ($(this).caret() === 0) {
+                var $prevNodeTask = $thisNode.prev().children(".task");
+                $prevNodeTask.focus();
+                // var length = $prevNodeTask.text().length;
+                // $prevNodeTask.caret(-1);
+            }
         }
 
         //RIGHT ARROW + text bar at right-most side of the content
         if (e.keyCode === KEY_RIGHTARROW) {
-        	//if the caret is placed at rightmost side of the content, move the caret to the beginning of the next div element.
+
+            var length = $(this).text().length;
+            if($(this).caret() === length){
+            	var $nextNodeTask = $thisNode.next().children(".task");
+            	$nextNodeTask.focus();
+            }
+            //if the caret is placed at rightmost side of the content, move the caret to the beginning of the next div element.
         }
 
         //DELETE: Remove the node. Focus on the previous node.
@@ -104,6 +118,7 @@ $(document).ready(function() {
 
         //TAB: Move the node inside of its previous sibling node. Label the moved node as a child node.
         if (e.keyCode === KEY_TAB) {
+        	e.preventDefault();
 
         }
 
