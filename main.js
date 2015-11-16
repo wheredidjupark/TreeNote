@@ -86,13 +86,13 @@ $(document).ready(function() {
         //LEFT ARROW + text bar at left-most side of the content
         if (e.keyCode === KEY_LEFTARROW) {
 
-            console.log($(this).caret());
             //if the caret (text bar thing) is placed at leftmost side of the content, move to the 
             if ($(this).caret() === 0) {
+            	e.preventDefault();
                 var $prevNodeTask = $thisNode.prev().children(".task");
-                $prevNodeTask.focus();
+                // $prevNodeTask.focus();
                 // var length = $prevNodeTask.text().length;
-                // $prevNodeTask.caret(-1);
+                $prevNodeTask.caret(-1);
             }
         }
 
@@ -100,11 +100,13 @@ $(document).ready(function() {
         if (e.keyCode === KEY_RIGHTARROW) {
 
             var length = $(this).text().length;
+            //if the caret is placed at rightmost side of the content, move the caret to the beginning of the next div element.
             if($(this).caret() === length){
+            	e.preventDefault();
             	var $nextNodeTask = $thisNode.next().children(".task");
             	$nextNodeTask.focus();
             }
-            //if the caret is placed at rightmost side of the content, move the caret to the beginning of the next div element.
+            
         }
 
         //DELETE: Remove the node. Focus on the previous node.
