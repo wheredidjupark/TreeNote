@@ -20,3 +20,7 @@ html, body{
 .node:focus {
 	outline: none;
 }
+
+.point{
+	background-color: orange;
+}

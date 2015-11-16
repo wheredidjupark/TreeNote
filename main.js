@@ -10,6 +10,17 @@ $(document).ready(function() {
     var KEY_DOWNARROW = 40;
 
     var createNode = function() {
+
+        // var $node = $("<div></div>").addClass("node");
+        // var $task = $("<div  contenteditable></div>").addClass("task");
+        // var $point = $("<span>*</span>").addClass("point");
+
+        // $node.append($task);
+        // $node.prepend($point);
+
+        // var $copy = $node.clone();
+        // return $copy;
+
         return $("<div contenteditable></div>").addClass("node");
     };
 
@@ -38,8 +49,10 @@ $(document).ready(function() {
     $("#app").on("keydown", ".node", function(e) {
 
         console.log(e.keyCode);
-        var text = $(this).text();
-        var html = $(this).html();
+        var textVal = $(this).text();
+        var htmlVal = $(this).html();
+        var thisParent = $(this).closest(".node");
+
 
         //ENTER: Create a new sibling node. Focus on the newly created sibling node.
         if (e.keyCode === KEY_ENTER) {
@@ -62,20 +75,25 @@ $(document).ready(function() {
         }
 
         //DELETE: Remove the node. Focus on the previous node.
-        if (e.keyCode === KEY_DELETE && $(this).html().toString().length === 0) {
-        	e.preventDefault();
-        	var content = $(this).html();
-        	$(this).prev().focus(); //the focus functionality should place the text cursor at the end of its content
-        	//http://stackoverflow.com/questions/499126/jquery-set-cursor-position-in-text-area
+        if (e.keyCode === KEY_DELETE && htmlVal.toString().length === 0) {
+            e.preventDefault();
+            var content = $(this).html();
+            $(this).prev().focus(); //the focus functionality should place the text cursor at the end of its content
+            //http://stackoverflow.com/questions/499126/jquery-set-cursor-position-in-text-area
             $(this).remove();
         }
 
         //TAB: Move the node inside of its previous sibling node.
-        if(e.keyCode === KEY_TAB){
-        }
+        if (e.keyCode === KEY_TAB) {}
 
         //REVERSE TAB: Move the child node outside of its parent node(i.e. next)
         //http://stackoverflow.com/questions/10655202/detect-multiple-keys-on-single-keypress-event-on-jquery 
+
+        //ENTER + Nothing in the node: Same functionality as REVERSE TAB (see above)
+        if (e.keyCode === KEY_ENTER && $(this).html().toString().length === 0) {
+
+        }
+
         saveData();
 
 
