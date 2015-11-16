@@ -17,5 +17,5 @@ html, body{
 }
 
 .node:focus {
-	
+	outline: none;
 }

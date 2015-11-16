@@ -41,7 +41,7 @@ $(document).ready(function() {
         var text = $(this).text();
         var html = $(this).html();
 
-        //upon enter key, save the text. and create a sibling node
+        //ENTER: Create a new sibling node. Focus on the newly created sibling node.
         if (e.keyCode === KEY_ENTER) {
 
             e.preventDefault();
@@ -49,16 +49,19 @@ $(document).ready(function() {
             $(this).next().focus();
         }
 
+        //DOWNARROW: Focus on the next node
         if (e.keyCode === KEY_DOWNARROW) {
             e.preventDefault();
             $(this).next().focus();
         }
 
+        //UPARROW: Focus on the previous node
         if (e.keyCode === KEY_UPARROW) {
             e.preventDefault();
             $(this).prev().focus();
         }
 
+        //DELETE: Remove the node. Focus on the previous node.
         if (e.keyCode === KEY_DELETE && html.toString().length === 0) {
         	e.preventDefault();
         	var content = $(this).html();
@@ -66,23 +69,14 @@ $(document).ready(function() {
             $(this).remove();
         }
 
+        //TAB: Move the node inside of its previous sibling node.
         if(e.keyCode === KEY_TAB){
-        	//put the element inside of its previous sibling element.
         }
 
         saveData();
 
 
     });
-
-    // $("#app").on("click", ".button", function(e) {
-    //     var $form = $("<form><input  type='text'></form>").addClass("form");
-    //     var $node = $(this).closest(".node");
-    //     $node.after($form);
-
-    //     saveData();
-    // });
-
 
     // //when text of the node is clicked,
     // $("#app").on("click", ".text", function(e) {
@@ -92,20 +86,6 @@ $(document).ready(function() {
     //     $(this).remove();
 
     //     saveData();
-
-    // });
-
-    // $("#app").on("keypress", ".modifier", function(e) {
-
-    //     var text = $(this).children("input").val();
-
-    //     if (e.keyCode === KEY_ENTER) {
-    //         e.preventDefault();
-    //         $text = $("<span>" + text + "</span>").addClass("text");
-    //         $(this).siblings(".button").after($text);
-    //         $(this).remove();
-    //         saveData();
-    //     }
 
     // });
 
