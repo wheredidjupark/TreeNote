@@ -42,6 +42,13 @@ $(document).ready(function() {
         } else {
             $("#app").append(createNode());
         }
+
+
+        //if there is no content in the app, create a node.
+        var appContent = $("#app").text();
+        if (appContent.length === 0) {
+            $("#app").append(createNode());
+        }
     };
 
     initialize();
@@ -57,46 +64,25 @@ $(document).ready(function() {
 
         //ENTER: Create a new sibling node. Focus on the newly created sibling node.
         if (e.keyCode === KEY_ENTER) {
-
-            // e.preventDefault();
-            // $(this).after(createNode());
-            // $(this).next().focus();
-
             e.preventDefault();
             $thisNode.after(createNode());
             $thisNode.next().children(".value").focus();
         }
 
-        //DOWNARROW: Focus on the next node
+        //DOWNARROW: focus on the next node
         if (e.keyCode === KEY_DOWNARROW) {
-            // e.preventDefault();
-            // $(this).next().focus();
-
             e.preventDefault();
             $thisNode.next().children(".value").focus();
         }
 
         //UPARROW: Focus on the previous node
         if (e.keyCode === KEY_UPARROW) {
-            // e.preventDefault();
-            // $(this).prev().focus();
-
             e.preventDefault();
             $thisNode.prev().children(".value").focus();
         }
 
-        //LEFT ARROW + text bar at left-most side of the content
+        //LEFT ARROW + caret at beginning: move to the previous node
         if (e.keyCode === KEY_LEFTARROW) {
-
-            //if the caret (text bar thing) is placed at leftmost side of the content, move to the 
-            // if ($(this).caret() === 0) {
-            //     e.preventDefault();
-            //     var $prevNodeValue = $thisNode.prev().children(".value");
-            //     // $prevNodeValue.focus();
-            //     // var length = $prevNodeValue.text().length;
-            //     $prevNodeValue.caret(-1);
-            // }
-
             if ($(this).caret() === 0) {
                 e.preventDefault();
                 var $prevNodeValue = $thisNode.prev().children(".value");
@@ -104,44 +90,32 @@ $(document).ready(function() {
             }
         }
 
-        //RIGHT ARROW + text bar at right-most side of the content
+        //RIGHT ARROW + caret at end: move to the next node.
         if (e.keyCode === KEY_RIGHTARROW) {
 
             var length = $(this).text().length;
-            //if the caret is placed at rightmost side of the content, move the caret to the beginning of the next div element.
             if ($(this).caret() === length) {
                 e.preventDefault();
                 var $nextNodeValue = $thisNode.next().children(".value");
                 $nextNodeValue.focus();
             }
-
         }
 
         //DELETE: Remove the node. Focus on the previous node.
         if (e.keyCode === KEY_DELETE) {
-            var $prevNode = $thisNode.prev();
-            var $prevNodeValue = $thisNode.prev().children(".value");
 
+            if ($("#app").children().length > 1) {
+                var $prevNode = $thisNode.prev();
+                var $prevNodeValue = $thisNode.prev().children(".value");
 
-            // if ($(this).caret() === 0 && $prevNodeValue.text().length === 0){
-            // 	e.preventDefault();
-            // 	$prevNode.remove();
-
-            // }
-
-            if (htmlVal.toString().length === 0) {
-                e.preventDefault();
-                $prevNodeValue.focus(); //the focus functionality should place the text cursor at the end of its content
-                //http://stackoverflow.com/questions/499126/jquery-set-cursor-position-in-text-area
-                $thisNode.remove();
+                if (htmlVal.toString().length === 0) {
+                    e.preventDefault();
+                    $prevNodeValue.focus(); //the focus functionality should place the text cursor at the end of its content
+                    //http://stackoverflow.com/questions/499126/jquery-set-cursor-position-in-text-area
+                    $thisNode.remove();
+                    //if the current node is not empty & the previous node is empty + caret at the beginning, delete the previous node.
+                }
             }
-
-
-
-            //if the current node is not empty & the previous node is empty + caret at the beginning, delete the previous node.
-
-
-
         }
 
         //TAB: Move the node inside of its previous sibling node. Label the moved node as a child node.
