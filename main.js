@@ -176,6 +176,8 @@ $(document).ready(function() {
             e.preventDefault();
             let $prevNodeChildren = $thisNode.prev().children(".children");
             $prevNodeChildren.append($thisNode);
+            $prevNodeChildren.children(".node").children(".value").focus();
+
         }
 
         //REVERSE TAB: Move the child node outside of its parent node(i.e. next)
