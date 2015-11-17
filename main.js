@@ -76,29 +76,31 @@ $(document).ready(function() {
                 console.log("parent");
                 return $thisNode.parent().closest(".node");
             } else {
-            	//has an older sibling
+                //has an older sibling
 
                 if ($adjacent.children(".children").children(".node").length === 0) {
                     //the older sibling has no children.
                     return $adjacent;
                 } else {
                     //the older sibling has children.
-                    $adjacent = $adjacent.children(".children").children(".node");
+                    let length = $adjacent.children(".children").children(".node").length;
+                    let adjacent = $adjacent.children(".children").children(".node")[length - 1];
+                    console.log(length);
+                    console.log(adjacent);
 
-                    while ($adjacent.children(".children").children(".node") > 1) {
-                    	let length = $adjacent.children(".children").children(".node").length;
-                        $adjacent = $adjacent.children(".children").children(".node")[length-1];
+                    while ($(adjacent).children(".children").children(".node").length > 0) {
+                        length = $(adjacent).children(".children").children(".node").length;
+                        adjacent = $(adjacent).children(".children").children(".node")[length - 1];
                     }
+                    console.log(adjacent);
 
-                    let nearestLength = $adjacent.length;
-                    $adjacent = $adjacent[nearestLength - 1];
-                    return $adjacent;
+                    return adjacent;
                 }
             }
         };
 
-        // console.log("node's adjacentUp value: ",$(findAdjUpNode()).children(".value").text());
-        console.log("node's value: ",$(this).text());
+        console.log("node's adjacentUp value: ", $(findAdjUpNode()).children(".value").text());
+        console.log("node's value: ", $(this).text());
         // console.log("node's adjacentDown value: ",$(findAdjUpNode()).children(".value").text());
 
 
@@ -106,6 +108,10 @@ $(document).ready(function() {
         let findAdjDownNode = function() {
             let $nearest = $thisNode.next();
             //if there is no sibling, move to thisNode's sibling and 
+        };
+
+        let moveAdjUpNode = function() {
+            $(findAdjUpNode()).children(".value").focus();
         };
 
         //ENTER: Create a new sibling node. Focus on the newly created sibling node.
@@ -124,8 +130,8 @@ $(document).ready(function() {
         //UPARROW: Focus on the previous node
         if (e.keyCode === KEY_UPARROW) {
             e.preventDefault();
-            $thisNode.prev().children(".value").focus();
             // $(findAdjUpNode()).children(".value").focus();
+            moveAdjUpNode();
         }
 
         //LEFT ARROW + caret at beginning: move to the previous node
@@ -153,12 +159,9 @@ $(document).ready(function() {
 
             if ($("#app").children().length > 1) {
 
-                let $prevNode = $thisNode.prev();
-                let $prevNodeValue = $thisNode.prev().children(".value");
-
                 if (htmlVal.toString().length === 0) {
                     e.preventDefault();
-                    $prevNodeValue.focus(); //the focus functionality should place the text cursor at the end of its content
+                    moveAdjUpNode();
                     //http://stackoverflow.com/questions/499126/jquery-set-cursor-position-in-text-area
                     $thisNode.remove();
                     //if the current node is not empty & the previous node is empty + caret at the beginning, delete the previous node.
