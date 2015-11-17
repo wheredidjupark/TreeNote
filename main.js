@@ -67,13 +67,13 @@ $(document).ready(function() {
         let $thisNode = $(this).closest(".node");
 
         //finds the nearest previous sibling node or closest parent node
-        let findAdjUpNode = function() {
+        let findOneUp = function() {
             let $adjacent = $thisNode.prev();
 
             //if thisNode does not have an older sibling, return the current node's parent
             if ($adjacent.length === 0) {
                 //closest 
-                console.log("parent");
+
                 return $thisNode.parent().closest(".node");
             } else {
                 //has an older sibling
@@ -85,52 +85,93 @@ $(document).ready(function() {
                     //the older sibling has children.
                     let length = $adjacent.children(".children").children(".node").length;
                     let adjacent = $adjacent.children(".children").children(".node")[length - 1];
-                    console.log(length);
-                    console.log(adjacent);
+
+
 
                     while ($(adjacent).children(".children").children(".node").length > 0) {
                         length = $(adjacent).children(".children").children(".node").length;
                         adjacent = $(adjacent).children(".children").children(".node")[length - 1];
                     }
-                    console.log(adjacent);
 
                     return adjacent;
                 }
             }
         };
 
-        console.log("node's adjacentUp value: ", $(findAdjUpNode()).children(".value").text());
+        console.log("node's adjacentUp value: ", $(findOneUp()).children(".value").text());
         console.log("node's value: ", $(this).text());
-        // console.log("node's adjacentDown value: ",$(findAdjUpNode()).children(".value").text());
+        // console.log("node's adjacentDown value: ",$(findOneUp()).children(".value").text());
 
 
 
-        let findAdjDownNode = function() {
-            let $nearest = $thisNode.next();
+        let findOneDown = function() {
+            let $adjacent = $thisNode.find(".node");
+            //console.log($adjacent);
+            if ($adjacent.length !== 0) {
+                //if children exist
+                console.log("child");
+                return $adjacent[0];
+            } else {
+                //if child doesn't exist, look into its sibling.
+                let $sibling = $thisNode.next();
+                if ($sibling.length > 0) {
+                    //if sibling exists, return the sibling.
+                    console.log("sibling");
+                    return $sibling;
+                } else {
+                    //if the sibling does not exist, then move to its parent's sibling
+                    console.log("parent's sibling");
+                    let $parent = $thisNode.parent().closest(".node");
+                    let $parentSibling = $parent.next();
+                    while ($parentSibling.length === 0) {
+                    	//if sibling doesn't exist
+                    	if($parent.length === 0){
+                    		return $thisNode;
+                    	}
+                        $parent = $parent.parent().closest(".node");
+                        $parentSibling = $parent.next();
+                    }
+                    return $parentSibling;
+                }
+            }
+
             //if there is no sibling, move to thisNode's sibling and 
         };
 
+
+
         let moveOneUp = function() {
-            $(findAdjUpNode()).children(".value").focus();
+            let $oneup = $(findOneUp());
+            $oneup.children(".value").focus();
         };
+
+        let moveOneDown = function() {
+            $(findOneDown()).children(".value").focus();
+        };
+
+        if (e.keyCode === KEY_SHIFT) {
+            e.preventDefault();
+            moveOneDown();
+        }
 
         //ENTER: Create a new sibling node. Focus on the newly created sibling node.
         if (e.keyCode === KEY_ENTER) {
             e.preventDefault();
-            $thisNode.before(createNode());
-            moveOneUp();
+            $thisNode.after(createNode());
+            $thisNode.next().children(".value").focus();
         }
 
         //DOWNARROW: focus on the next node
         if (e.keyCode === KEY_DOWNARROW) {
             e.preventDefault();
-            $thisNode.next().children(".value").focus();
+            // $thisNode.next().children(".value").focus();
+            moveOneDown();
         }
 
         //UPARROW: Focus on the previous node
         if (e.keyCode === KEY_UPARROW) {
             e.preventDefault();
-            // $(findAdjUpNode()).children(".value").focus();
+            // $(findOneUp()).children(".value").focus();
             moveOneUp();
         }
 
@@ -148,8 +189,9 @@ $(document).ready(function() {
             let length = $(this).text().length;
             if ($(this).caret() === length) {
                 e.preventDefault();
-                let $nextNodeValue = $thisNode.next().children(".value");
-                $nextNodeValue.focus();
+                moveOneDown();
+                // let $nextNodeValue = $thisNode.next().children(".value");
+                // $nextNodeValue.focus();
             }
         }
 
@@ -159,7 +201,7 @@ $(document).ready(function() {
             if (htmlVal.toString().length === 0) {
                 e.preventDefault();
 
-                if ($("#app").children().length > 1 || $thisNode.parents().length > 0) {
+                if ($("#app").children().length > 1 || $thisNode.parent().closest(".node").length > 0) {
                     moveOneUp();
                     //http://stackoverflow.com/questions/499126/jquery-set-cursor-position-in-text-area
                     $thisNode.remove();
