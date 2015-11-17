@@ -110,7 +110,7 @@ $(document).ready(function() {
             //if there is no sibling, move to thisNode's sibling and 
         };
 
-        let moveAdjUpNode = function() {
+        let moveOneUp = function() {
             $(findAdjUpNode()).children(".value").focus();
         };
 
@@ -131,15 +131,14 @@ $(document).ready(function() {
         if (e.keyCode === KEY_UPARROW) {
             e.preventDefault();
             // $(findAdjUpNode()).children(".value").focus();
-            moveAdjUpNode();
+            moveOneUp();
         }
 
         //LEFT ARROW + caret at beginning: move to the previous node
         if (e.keyCode === KEY_LEFTARROW) {
             if ($(this).caret() === 0) {
                 e.preventDefault();
-                let $prevNodeValue = $thisNode.prev().children(".value");
-                $prevNodeValue.focus();
+                moveOneUp();
             }
         }
 
@@ -161,7 +160,7 @@ $(document).ready(function() {
                 e.preventDefault();
 
                 if ($("#app").children().length > 1 || $thisNode.parents().length > 0) {
-                    moveAdjUpNode();
+                    moveOneUp();
                     //http://stackoverflow.com/questions/499126/jquery-set-cursor-position-in-text-area
                     $thisNode.remove();
                     //if the current node is not empty & the previous node is empty + caret at the beginning, delete the previous node.
