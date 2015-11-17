@@ -12,10 +12,12 @@ $(document).ready(function() {
     var createNode = function() {
 
         var $node = $("<div></div>").addClass("node");
-        var $task = $("<div  contenteditable></div>").addClass("task");
-        var $point = $("<span></span>").addClass("point");
+        var $value = $("<div  contenteditable></div>").addClass("value");
+        var $children = $("<div></div>").addClass("children");
+        var $point = $("<span>O</span>").addClass("point");
 
-        $node.append($task);
+        $node.append($value);
+        $node.append($children);
         $node.prepend($point);
 
         var $copy = $node.clone();
@@ -46,7 +48,7 @@ $(document).ready(function() {
 
 
 
-    $("#app").on("keydown", ".task", function(e) {
+    $("#app").on("keydown", ".value", function(e) {
 
         // console.log("You pressed the key with the following keycode",e.keyCode);
         var textVal = $(this).text();
@@ -62,7 +64,7 @@ $(document).ready(function() {
 
             e.preventDefault();
             $thisNode.after(createNode());
-            $thisNode.next().children(".task").focus();
+            $thisNode.next().children(".value").focus();
         }
 
         //DOWNARROW: Focus on the next node
@@ -71,7 +73,7 @@ $(document).ready(function() {
             // $(this).next().focus();
 
             e.preventDefault();
-            $thisNode.next().children(".task").focus();
+            $thisNode.next().children(".value").focus();
         }
 
         //UPARROW: Focus on the previous node
@@ -80,7 +82,7 @@ $(document).ready(function() {
             // $(this).prev().focus();
 
             e.preventDefault();
-            $thisNode.prev().children(".task").focus();
+            $thisNode.prev().children(".value").focus();
         }
 
         //LEFT ARROW + text bar at left-most side of the content
@@ -88,11 +90,11 @@ $(document).ready(function() {
 
             //if the caret (text bar thing) is placed at leftmost side of the content, move to the 
             if ($(this).caret() === 0) {
-            	e.preventDefault();
-                var $prevNodeTask = $thisNode.prev().children(".task");
-                // $prevNodeTask.focus();
-                // var length = $prevNodeTask.text().length;
-                $prevNodeTask.caret(-1);
+                e.preventDefault();
+                var $prevNodeValue = $thisNode.prev().children(".value");
+                // $prevNodeValue.focus();
+                // var length = $prevNodeValue.text().length;
+                $prevNodeValue.caret(-1);
             }
         }
 
@@ -101,27 +103,46 @@ $(document).ready(function() {
 
             var length = $(this).text().length;
             //if the caret is placed at rightmost side of the content, move the caret to the beginning of the next div element.
-            if($(this).caret() === length){
-            	e.preventDefault();
-            	var $nextNodeTask = $thisNode.next().children(".task");
-            	$nextNodeTask.focus();
+            if ($(this).caret() === length) {
+                e.preventDefault();
+                var $nextNodeValue = $thisNode.next().children(".value");
+                $nextNodeValue.focus();
             }
-            
+
         }
 
         //DELETE: Remove the node. Focus on the previous node.
-        if (e.keyCode === KEY_DELETE && htmlVal.toString().length === 0) {
-            e.preventDefault();
-            var content = $(this).html();
-            $thisNode.prev().children(".task").focus(); //the focus functionality should place the text cursor at the end of its content
-            //http://stackoverflow.com/questions/499126/jquery-set-cursor-position-in-text-area
-            $thisNode.remove();
+        if (e.keyCode === KEY_DELETE) {
+        	var $prevNode = $thisNode.prev();
+            var $prevNodeValue = $thisNode.prev().children(".value");
+
+
+            // if ($(this).caret() === 0 && $prevNodeValue.text().length === 0){
+            // 	e.preventDefault();
+            // 	$prevNode.remove();
+
+            // }
+
+            if (htmlVal.toString().length === 0) {
+                e.preventDefault();
+                $prevNodeValue.focus(); //the focus functionality should place the text cursor at the end of its content
+                //http://stackoverflow.com/questions/499126/jquery-set-cursor-position-in-text-area
+                $thisNode.remove();
+            }
+
+
+
+            //if the current node is not empty & the previous node is empty + caret at the beginning, delete the previous node.
+
+
+
         }
 
         //TAB: Move the node inside of its previous sibling node. Label the moved node as a child node.
         if (e.keyCode === KEY_TAB) {
-        	e.preventDefault();
-
+            e.preventDefault();
+           	var $prevNodeChildren = $thisNode.prev().children(".children");
+           	$prevNodeChildren.append($thisNode);
         }
 
         //REVERSE TAB: Move the child node outside of its parent node(i.e. next)

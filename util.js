@@ -3,7 +3,7 @@
     var target = this[0];
     var isContentEditable = target.contentEditable === 'true';
     //get
-    if (arguments.length == 0) {
+    if (arguments.length === 0) {
       //HTML5
       if (window.getSelection) {
         //contenteditable

@@ -3,7 +3,7 @@
     margin: 50px auto 50px;
     background-color: white;
     padding: 50px;
-    min-height: 70%;
+    min-height: 80%;
     -webkit-box-shadow: 0px 0px 25px 1px rgba(0, 0, 0, 0.55);
     -moz-box-shadow: 0px 0px 25px 1px rgba(0, 0, 0, 0.55);
     box-shadow: 0px 0px 25px 1px rgba(0, 0, 0, 0.55);
@@ -18,21 +18,28 @@ body {
 }
 
 .node {
-    background-color: white;
+    background-color: orange;
+    margin: 5px 0;
 }
 
-.node > .task:focus {
+.node > .value:focus {
     outline: none;
 }
 
 .point {
     background-color: orange;
-    margin: 0 0 0 0;
+    margin-left: -20px;
     min-height: 5px;
     min-width: 5px;
 }
 
-.task {
-    width: 95%;
+.value {
+	margin-left: 6px;
+    width: 100%;
     display: inline-block;
+}
+
+.children{
+	margin-left: 50px;
+	color: red;
 }
