@@ -68,22 +68,40 @@ $(document).ready(function() {
 
         //finds the nearest previous sibling node or closest parent node
         let findAdjUpNode = function() {
-            let $nearest = $thisNode.prev();
-            //if it doesn't have early sibling, go to its parent
-            if ($nearest.length === 0) {
-                return $thisNode.closest(".node");
-            } else {
-                //if it has a sibling, look into its children
-                $nearest = $thisNode.children();
-                while ($nearest.children().length > 1) {
-                    $nearest = $thisNode.children();
-                }
+            let $adjacent = $thisNode.prev();
 
-                nearestLength = nearest.length;
-                $nearest = nearest[nearestLength-1];
-                return $nearest;
+            //if thisNode does not have an older sibling, return the current node's parent
+            if ($adjacent.length === 0) {
+                //closest 
+                console.log("parent");
+                return $thisNode.parent().closest(".node");
+            } else {
+            	//has an older sibling
+
+                if ($adjacent.children(".children").children(".node").length === 0) {
+                    //the older sibling has no children.
+                    return $adjacent;
+                } else {
+                    //the older sibling has children.
+                    $adjacent = $adjacent.children(".children").children(".node");
+
+                    while ($adjacent.children(".children").children(".node") > 1) {
+                    	let length = $adjacent.children(".children").children(".node").length;
+                        $adjacent = $adjacent.children(".children").children(".node")[length-1];
+                    }
+
+                    let nearestLength = $adjacent.length;
+                    $adjacent = $adjacent[nearestLength - 1];
+                    return $adjacent;
+                }
             }
         };
+
+        // console.log("node's adjacentUp value: ",$(findAdjUpNode()).children(".value").text());
+        console.log("node's value: ",$(this).text());
+        // console.log("node's adjacentDown value: ",$(findAdjUpNode()).children(".value").text());
+
+
 
         let findAdjDownNode = function() {
             let $nearest = $thisNode.next();
@@ -107,6 +125,7 @@ $(document).ready(function() {
         if (e.keyCode === KEY_UPARROW) {
             e.preventDefault();
             $thisNode.prev().children(".value").focus();
+            // $(findAdjUpNode()).children(".value").focus();
         }
 
         //LEFT ARROW + caret at beginning: move to the previous node
