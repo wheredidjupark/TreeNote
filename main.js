@@ -1,41 +1,42 @@
 $(document).ready(function() {
-    var KEY_ENTER = 13;
-    var KEY_DELETE = 8;
-    var KEY_TAB = 9;
-    var KEY_SHIFT = 16;
 
-    var KEY_LEFTARROW = 37;
-    var KEY_UPARROW = 38;
-    var KEY_RIGHTARROW = 39;
-    var KEY_DOWNARROW = 40;
+	'use strict';
 
-    var createNode = function() {
+    let KEY_ENTER = 13;
+    let KEY_DELETE = 8;
+    let KEY_TAB = 9;
+    let KEY_SHIFT = 16;
 
-        var $node = $("<div></div>").addClass("node");
-        var $value = $("<div  contenteditable></div>").addClass("value");
-        var $children = $("<div></div>").addClass("children");
-        var $point = $("<span>O</span>").addClass("point");
+    let KEY_LEFTARROW = 37;
+    let KEY_UPARROW = 38;
+    let KEY_RIGHTARROW = 39;
+    let KEY_DOWNARROW = 40;
+
+    let createNode = function() {
+
+        let $node = $("<div></div>").addClass("node");
+        let $value = $("<div  contenteditable></div>").addClass("value");
+        let $children = $("<div></div>").addClass("children");
+        let $point = $("<span>O</span>").addClass("point");
 
         $node.append($value);
         $node.append($children);
         $node.prepend($point);
 
-        var $copy = $node.clone();
+        let $copy = $node.clone();
         return $copy;
-
-        // return $("<div contenteditable></div>").addClass("node");
     };
 
-    var saveData = function() {
-        var data = $("#app").html();
+    let saveData = function() {
+        let data = $("#app").html();
         window.localStorage.setItem('appData', data);
     };
 
-    var getData = function() {
+    let getData = function() {
         return window.localStorage.getItem('appData');
     };
 
-    var initialize = function() {
+    let initialize = function() {
         if (getData()) {
             $("#app").html("");
             $("#app").append(getData());
@@ -45,7 +46,8 @@ $(document).ready(function() {
 
 
         //if there is no content in the app, create a node.
-        var appContent = $("#app").text();
+        //Done as a safeguard.
+        let appContent = $("#app").text();
         if (appContent.length === 0) {
             $("#app").append(createNode());
         }
@@ -58,9 +60,9 @@ $(document).ready(function() {
     $("#app").on("keydown", ".value", function(e) {
 
         // console.log("You pressed the key with the following keycode",e.keyCode);
-        var textVal = $(this).text();
-        var htmlVal = $(this).html();
-        var $thisNode = $(this).closest(".node");
+        let textVal = $(this).text();
+        let htmlVal = $(this).html();
+        let $thisNode = $(this).closest(".node");
 
         //ENTER: Create a new sibling node. Focus on the newly created sibling node.
         if (e.keyCode === KEY_ENTER) {
@@ -85,7 +87,7 @@ $(document).ready(function() {
         if (e.keyCode === KEY_LEFTARROW) {
             if ($(this).caret() === 0) {
                 e.preventDefault();
-                var $prevNodeValue = $thisNode.prev().children(".value");
+                let $prevNodeValue = $thisNode.prev().children(".value");
                 $prevNodeValue.focus();
             }
         }
@@ -93,10 +95,10 @@ $(document).ready(function() {
         //RIGHT ARROW + caret at end: move to the next node.
         if (e.keyCode === KEY_RIGHTARROW) {
 
-            var length = $(this).text().length;
+            let length = $(this).text().length;
             if ($(this).caret() === length) {
                 e.preventDefault();
-                var $nextNodeValue = $thisNode.next().children(".value");
+                let $nextNodeValue = $thisNode.next().children(".value");
                 $nextNodeValue.focus();
             }
         }
@@ -105,8 +107,8 @@ $(document).ready(function() {
         if (e.keyCode === KEY_DELETE) {
 
             if ($("#app").children().length > 1) {
-                var $prevNode = $thisNode.prev();
-                var $prevNodeValue = $thisNode.prev().children(".value");
+                let $prevNode = $thisNode.prev();
+                let $prevNodeValue = $thisNode.prev().children(".value");
 
                 if (htmlVal.toString().length === 0) {
                     e.preventDefault();
@@ -121,7 +123,7 @@ $(document).ready(function() {
         //TAB: Move the node inside of its previous sibling node. Label the moved node as a child node.
         if (e.keyCode === KEY_TAB) {
             e.preventDefault();
-            var $prevNodeChildren = $thisNode.prev().children(".children");
+            let $prevNodeChildren = $thisNode.prev().children(".children");
             $prevNodeChildren.append($thisNode);
         }
 
@@ -140,7 +142,7 @@ $(document).ready(function() {
 
     // //when text of the node is clicked,
     // $("#app").on("click", ".text", function(e) {
-    //     var $form = $("<form><input type='text'></form>").addClass("modifier");
+    //     let $form = $("<form><input type='text'></form>").addClass("modifier");
     //     $form.children("input").val($(this).text());
     //     $(this).before($form);
     //     $(this).remove();
@@ -150,11 +152,11 @@ $(document).ready(function() {
     // });
 
 
-    var hoverButton = function() {
-        // var timeoutId;
+    let hoverButton = function() {
+        // let timeoutId;
         // $(".button").hover(function() {
         //     if (!timeoutId) {
-        //         var $this = $(this);
+        //         let $this = $(this);
         //         timeoutId = setTimeout(function() {
         //             console.log("hovering");
 
