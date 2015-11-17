@@ -89,12 +89,18 @@ $(document).ready(function() {
         if (e.keyCode === KEY_LEFTARROW) {
 
             //if the caret (text bar thing) is placed at leftmost side of the content, move to the 
+            // if ($(this).caret() === 0) {
+            //     e.preventDefault();
+            //     var $prevNodeValue = $thisNode.prev().children(".value");
+            //     // $prevNodeValue.focus();
+            //     // var length = $prevNodeValue.text().length;
+            //     $prevNodeValue.caret(-1);
+            // }
+
             if ($(this).caret() === 0) {
                 e.preventDefault();
                 var $prevNodeValue = $thisNode.prev().children(".value");
-                // $prevNodeValue.focus();
-                // var length = $prevNodeValue.text().length;
-                $prevNodeValue.caret(-1);
+                $prevNodeValue.focus();
             }
         }
 
@@ -113,7 +119,7 @@ $(document).ready(function() {
 
         //DELETE: Remove the node. Focus on the previous node.
         if (e.keyCode === KEY_DELETE) {
-        	var $prevNode = $thisNode.prev();
+            var $prevNode = $thisNode.prev();
             var $prevNodeValue = $thisNode.prev().children(".value");
 
 
@@ -141,8 +147,8 @@ $(document).ready(function() {
         //TAB: Move the node inside of its previous sibling node. Label the moved node as a child node.
         if (e.keyCode === KEY_TAB) {
             e.preventDefault();
-           	var $prevNodeChildren = $thisNode.prev().children(".children");
-           	$prevNodeChildren.append($thisNode);
+            var $prevNodeChildren = $thisNode.prev().children(".children");
+            $prevNodeChildren.append($thisNode);
         }
 
         //REVERSE TAB: Move the child node outside of its parent node(i.e. next)
