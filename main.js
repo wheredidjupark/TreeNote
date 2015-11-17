@@ -157,16 +157,18 @@ $(document).ready(function() {
         //DELETE: Remove the node. Focus on the previous node.
         if (e.keyCode === KEY_DELETE) {
 
-            if ($("#app").children().length > 1) {
+            if (htmlVal.toString().length === 0) {
+                e.preventDefault();
 
-                if (htmlVal.toString().length === 0) {
-                    e.preventDefault();
+                if ($("#app").children().length > 1 || $thisNode.parents().length > 0) {
                     moveAdjUpNode();
                     //http://stackoverflow.com/questions/499126/jquery-set-cursor-position-in-text-area
                     $thisNode.remove();
                     //if the current node is not empty & the previous node is empty + caret at the beginning, delete the previous node.
                 }
+
             }
+
         }
 
         //TAB: Move the node inside of its previous sibling node. Label the moved node as a child node.
