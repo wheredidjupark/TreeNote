@@ -117,8 +117,8 @@ $(document).ready(function() {
         //ENTER: Create a new sibling node. Focus on the newly created sibling node.
         if (e.keyCode === KEY_ENTER) {
             e.preventDefault();
-            $thisNode.after(createNode());
-            $thisNode.next().children(".value").focus();
+            $thisNode.before(createNode());
+            moveOneUp();
         }
 
         //DOWNARROW: focus on the next node
