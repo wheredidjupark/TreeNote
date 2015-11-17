@@ -18,7 +18,7 @@ body {
 }
 
 .node {
-    background-color: orange;
+
     margin: 5px 0;
 }
 
@@ -27,7 +27,7 @@ body {
 }
 
 .point {
-    background-color: orange;
+
     margin-left: -20px;
     min-height: 5px;
     min-width: 5px;
@@ -41,5 +41,5 @@ body {
 
 .children{
 	margin-left: 50px;
-	color: red;
+
 }

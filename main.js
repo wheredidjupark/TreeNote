@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-	'use strict';
+    'use strict';
 
     let KEY_ENTER = 13;
     let KEY_DELETE = 8;
@@ -53,6 +53,8 @@ $(document).ready(function() {
         }
     };
 
+
+
     initialize();
 
 
@@ -63,6 +65,30 @@ $(document).ready(function() {
         let textVal = $(this).text();
         let htmlVal = $(this).html();
         let $thisNode = $(this).closest(".node");
+
+        //finds the nearest previous sibling node or closest parent node
+        let findAdjUpNode = function() {
+            let $nearest = $thisNode.prev();
+            //if it doesn't have early sibling, go to its parent
+            if ($nearest.length === 0) {
+                return $thisNode.closest(".node");
+            } else {
+                //if it has a sibling, look into its children
+                $nearest = $thisNode.children();
+                while ($nearest.children().length > 1) {
+                    $nearest = $thisNode.children();
+                }
+
+                nearestLength = nearest.length;
+                $nearest = nearest[nearestLength-1];
+                return $nearest;
+            }
+        };
+
+        let findAdjDownNode = function() {
+            let $nearest = $thisNode.next();
+            //if there is no sibling, move to thisNode's sibling and 
+        };
 
         //ENTER: Create a new sibling node. Focus on the newly created sibling node.
         if (e.keyCode === KEY_ENTER) {
@@ -107,6 +133,7 @@ $(document).ready(function() {
         if (e.keyCode === KEY_DELETE) {
 
             if ($("#app").children().length > 1) {
+
                 let $prevNode = $thisNode.prev();
                 let $prevNodeValue = $thisNode.prev().children(".value");
 
