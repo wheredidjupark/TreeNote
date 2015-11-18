@@ -56,7 +56,7 @@ $(document).ready(function() {
     let keydownEvents = function() {
         $("#app").on("keydown", ".value", function(e) {
 
-            // console.log("You pressed the key with the following keycode",e.keyCode);
+            console.log("You pressed the key with the following keycode",e.keyCode);
             let textVal = $(this).text();
             let htmlVal = $(this).html();
             let $thisNode = $(this).closest(".node");
@@ -93,8 +93,8 @@ $(document).ready(function() {
                 }
             };
 
-            console.log("node's adjacentUp value: ", $(findOneUp()).children(".value").text());
-            console.log("node's value: ", $(this).text());
+            // console.log("node's adjacentUp value: ", $(findOneUp()).children(".value").text());
+            // console.log("node's value: ", $(this).text());
             // console.log("node's adjacentDown value: ",$(findOneUp()).children(".value").text());
 
 
@@ -104,18 +104,18 @@ $(document).ready(function() {
                 //console.log($adjacent);
                 if ($adjacent.length !== 0) {
                     //if children exist
-                    console.log("child");
+                    // console.log("child");
                     return $adjacent[0];
                 } else {
                     //if child doesn't exist, look into its sibling.
                     let $sibling = $thisNode.next();
                     if ($sibling.length > 0) {
                         //if sibling exists, return the sibling.
-                        console.log("sibling");
+                        // console.log("sibling");
                         return $sibling;
                     } else {
                         //if the sibling does not exist, then move to its parent's sibling
-                        console.log("parent's sibling");
+                        // console.log("parent's sibling");
                         let $parent = $thisNode.parent().closest(".node");
                         let $parentSibling = $parent.next();
                         while ($parentSibling.length === 0) {
@@ -143,11 +143,6 @@ $(document).ready(function() {
             let moveOneDown = function() {
                 $(findOneDown()).children(".value").focus();
             };
-
-            if (e.keyCode === KEY_SHIFT) {
-                e.preventDefault();
-                moveOneDown();
-            }
 
             //ENTER: Create a new sibling node. Focus on the newly created sibling node.
             if (e.keyCode === KEY_ENTER) {
@@ -208,7 +203,7 @@ $(document).ready(function() {
             }
 
             //TAB: Move the node inside of its previous sibling node. Label the moved node as a child node.
-            if (e.keyCode === KEY_TAB) {
+            if (e.keyCode === KEY_TAB && !e.shiftKey) {
                 e.preventDefault();
                 let $prevNodeChildren = $thisNode.prev().children(".children");
                 $prevNodeChildren.append($thisNode);
@@ -218,10 +213,15 @@ $(document).ready(function() {
             //REVERSE TAB: Move the child node outside of its parent node(i.e. next)
             //http://stackoverflow.com/questions/10655202/detect-multiple-keys-on-single-keypress-event-on-jquery 
 
-            //ENTER + Nothing in the node: Same functionality as REVERSE TAB (see above)
-            if (e.keyCode === KEY_ENTER && htmlVal.toString().length === 0) {
+            if(e.keyCode === KEY_TAB && e.shiftKey){
+            	e.preventDefault();
+            	let $parentNode = $thisNode.parent().closest(".node");
+            	$parentNode.after($thisNode);
+            	$(this).focus();
 
             }
+            //ENTER + Nothing in the node: Same functionality as REVERSE TAB (see above)
+            // if (e.keyCode === KEY_ENTER && htmlVal.toString().length === 0) {}
 
             saveData();
         });
@@ -238,7 +238,7 @@ $(document).ready(function() {
 
                 if (!timeoutId) {
                     timeoutId = setTimeout(function() {
-                        console.log("hovering");
+                        // console.log("hovering");
                         let $menubar = $("<div>Menu</div>").addClass("menubar");
                         $thisNode.prepend($menubar);
 
@@ -250,7 +250,7 @@ $(document).ready(function() {
                 let $thisNode = $(this).closest(".node");
 
                 if (timeoutId) {
-                    console.log("leaving");
+                    // console.log("leaving");
                     clearTimeout(timeoutId);
                     timeoutId = false;
                     $thisNode.children(".menubar").remove();
