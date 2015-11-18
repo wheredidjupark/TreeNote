@@ -271,12 +271,12 @@ $(document).ready(function() {
             $("#app").on("click", ".bullet", function() {
                 console.log("click");
                 let $thisNode = $(this).closest(".node");
-                let $thisNodechildren = $thisNode.children(".children");
+                let $thisNodeChildren = $thisNode.children(".children");
 
-                // if ($childrenNode.length > 0) {
-                $thisNodechildren.toggleClass("hidden");
-                $(this).toggleClass("bullet-clicked");
-                // }
+                if ($thisNodeChildren.children(".node").length > 0) {
+                    $thisNodeChildren.toggleClass("hidden");
+                    $(this).toggleClass("bullet-clicked");
+                }
                 saveData();
             });
         };
