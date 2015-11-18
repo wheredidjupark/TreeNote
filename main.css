@@ -1,12 +1,15 @@
 #app {
     max-width: 800px;
-    margin: 50px auto 50px;
+    margin: 25px auto 25px;
     background-color: white;
     padding: 50px;
-    min-height: 80%;
+    min-height: 85%;
     -webkit-box-shadow: 0px 0px 25px 1px rgba(0, 0, 0, 0.55);
     -moz-box-shadow: 0px 0px 25px 1px rgba(0, 0, 0, 0.55);
     box-shadow: 0px 0px 25px 1px rgba(0, 0, 0, 0.55);
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 html,
@@ -18,7 +21,6 @@ body {
 }
 
 .node {
-
     margin: 5px 0;
 }
 
@@ -27,7 +29,6 @@ body {
 }
 
 .bullet {
-
     margin-left: -20px;
     min-height: 5px;
     min-width: 5px;
@@ -40,24 +41,29 @@ body {
 }
 
 .bullet:hover {
-	cursor: pointer;
+    cursor: pointer;
 }
 
 .value {
-	margin-left: 6px;
+    margin-left: 6px;
     width: 100%;
     display: inline-block;
 }
 
-.children{
-	margin-left: 50px;
-
+.children {
+    margin-left: 50px;
 }
 
-.hidden{
-	display: none;
+.hidden {
+    display: none;
 }
 
 .bullet-clicked {
-	background-color: orange;
+    background-color: orange;
+}
+
+footer{
+	font-family: Helvetica;
+	text-align: center;
+	font-size: 10px;
 }
