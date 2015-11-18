@@ -269,6 +269,7 @@ $(document).ready(function() {
     			let $thisNodeChildren = $thisNode.children(".children");
     			$thisNodeChildren.toggleClass("hidden");
     			$(this).toggleClass("bullet-clicked");
+    			saveData();
     		});
     	};
     	clickBullet();
