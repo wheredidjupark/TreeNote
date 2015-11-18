@@ -43,3 +43,11 @@ body {
 	margin-left: 50px;
 
 }
+
+.hidden{
+	display: none;
+}
+
+.bullet-clicked {
+	background-color: orange;
+}

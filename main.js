@@ -238,9 +238,9 @@ $(document).ready(function() {
 
                 if (!timeoutId) {
                     timeoutId = setTimeout(function() {
-                        // console.log("hovering");
-                        let $menubar = $("<div>Menu</div>").addClass("menubar");
-                        $thisNode.prepend($menubar);
+                        console.log("hovering");
+                        // let $menubar = $("<div>Menu</div>").addClass("menubar");
+                        // $thisNode.prepend($menubar);
 
                     }, 500);
                 }
@@ -250,10 +250,10 @@ $(document).ready(function() {
                 let $thisNode = $(this).closest(".node");
 
                 if (timeoutId) {
-                    // console.log("leaving");
+                    console.log("leaving");
                     clearTimeout(timeoutId);
                     timeoutId = false;
-                    $thisNode.children(".menubar").remove();
+                    // $thisNode.children(".menubar").remove();
                 }
             });
         };
@@ -261,9 +261,25 @@ $(document).ready(function() {
         hoverBullet();
     };
 
+    let clickEvents = function(){
+    	let clickBullet = function(){
+    		$("#app").on("click", ".bullet", function(){
+    			console.log("click");
+    			let $thisNode = $(this).closest(".node");
+    			let $thisNodeChildren = $thisNode.children(".children");
+    			$thisNodeChildren.toggleClass("hidden");
+    			$(this).toggleClass("bullet-clicked");
+    		});
+    	};
+    	clickBullet();
+    };
+
+
+
     initialize();
     keydownEvents();
     hoverEvents();
+    clickEvents();
 
 
 
