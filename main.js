@@ -56,7 +56,7 @@ $(document).ready(function() {
     let keydownEvents = function() {
         $("#app").on("keydown", ".value", function(e) {
 
-            console.log("You pressed the key with the following keycode",e.keyCode);
+            console.log("You pressed the key with the following keycode", e.keyCode);
             let textVal = $(this).text();
             let htmlVal = $(this).html();
             let $thisNode = $(this).closest(".node");
@@ -93,11 +93,6 @@ $(document).ready(function() {
                 }
             };
 
-            // console.log("node's adjacentUp value: ", $(findOneUp()).children(".value").text());
-            // console.log("node's value: ", $(this).text());
-            // console.log("node's adjacentDown value: ",$(findOneUp()).children(".value").text());
-
-
 
             let findOneDown = function() {
                 let $adjacent = $thisNode.find(".node");
@@ -133,6 +128,9 @@ $(document).ready(function() {
                 //if there is no sibling, move to thisNode's sibling and 
             };
 
+            console.log("node's adjacentUp value: ", $(findOneUp()).children(".value").text());
+            console.log("node's value: ", $(this).text());
+            console.log("node's adjacentDown value: ", $(findOneDown()).children(".value").text());
 
 
             let moveOneUp = function() {
@@ -154,14 +152,12 @@ $(document).ready(function() {
             //DOWNARROW: focus on the next node
             if (e.keyCode === KEY_DOWNARROW) {
                 e.preventDefault();
-                // $thisNode.next().children(".value").focus();
                 moveOneDown();
             }
 
             //UPARROW: Focus on the previous node
             if (e.keyCode === KEY_UPARROW) {
                 e.preventDefault();
-                // $(findOneUp()).children(".value").focus();
                 moveOneUp();
             }
 
@@ -205,19 +201,28 @@ $(document).ready(function() {
             //TAB: Move the node inside of its previous sibling node. Label the moved node as a child node.
             if (e.keyCode === KEY_TAB && !e.shiftKey) {
                 e.preventDefault();
+
+                let $prevNode = $thisNode.prev();
                 let $prevNodeChildren = $thisNode.prev().children(".children");
+
                 $prevNodeChildren.append($thisNode);
-                $prevNodeChildren.children(".node").children(".value").focus();
+
+                if ($prevNodeChildren.hasClass("hidden")) {
+                    $prevNodeChildren.toggleClass("hidden", false);
+                    $prevNode.children(".bullet").toggleClass("bullet-clicked", false);
+                }
+                // $prevNodeChildren.children(".node").children(".value").focus();
+                $(this).focus();
             }
 
             //REVERSE TAB: Move the child node outside of its parent node(i.e. next)
             //http://stackoverflow.com/questions/10655202/detect-multiple-keys-on-single-keypress-event-on-jquery 
 
-            if(e.keyCode === KEY_TAB && e.shiftKey){
-            	e.preventDefault();
-            	let $parentNode = $thisNode.parent().closest(".node");
-            	$parentNode.after($thisNode);
-            	$(this).focus();
+            if (e.keyCode === KEY_TAB && e.shiftKey) {
+                e.preventDefault();
+                let $parentNode = $thisNode.parent().closest(".node");
+                $parentNode.after($thisNode);
+                $(this).focus();
 
             }
             //ENTER + Nothing in the node: Same functionality as REVERSE TAB (see above)
@@ -261,18 +266,21 @@ $(document).ready(function() {
         hoverBullet();
     };
 
-    let clickEvents = function(){
-    	let clickBullet = function(){
-    		$("#app").on("click", ".bullet", function(){
-    			console.log("click");
-    			let $thisNode = $(this).closest(".node");
-    			let $thisNodeChildren = $thisNode.children(".children");
-    			$thisNodeChildren.toggleClass("hidden");
-    			$(this).toggleClass("bullet-clicked");
-    			saveData();
-    		});
-    	};
-    	clickBullet();
+    let clickEvents = function() {
+        let clickBullet = function() {
+            $("#app").on("click", ".bullet", function() {
+                console.log("click");
+                let $thisNode = $(this).closest(".node");
+                let $thisNodechildren = $thisNode.children(".children");
+
+                // if ($childrenNode.length > 0) {
+                $thisNodechildren.toggleClass("hidden");
+                $(this).toggleClass("bullet-clicked");
+                // }
+                saveData();
+            });
+        };
+        clickBullet();
     };
 
 
