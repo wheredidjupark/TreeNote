@@ -234,19 +234,26 @@ $(document).ready(function() {
             let timeoutId = false;
 
             $("#app").on("mouseenter", ".bullet", function() {
+                let $thisNode = $(this).closest(".node");
+
                 if (!timeoutId) {
-                    let $this = $(this);
                     timeoutId = setTimeout(function() {
                         console.log("hovering");
+                        let $menubar = $("<div>Menu</div>").addClass("menubar");
+                        $thisNode.prepend($menubar);
+
                     }, 500);
                 }
             });
 
             $("#app").on("mouseleave", ".bullet", function() {
+                let $thisNode = $(this).closest(".node");
+
                 if (timeoutId) {
                     console.log("leaving");
                     clearTimeout(timeoutId);
                     timeoutId = false;
+                    $thisNode.children(".menubar").remove();
                 }
             });
         };
