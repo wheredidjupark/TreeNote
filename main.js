@@ -17,7 +17,7 @@ $(document).ready(function() {
         let $node = $("<div></div>").addClass("node");
         let $value = $("<div  contenteditable></div>").addClass("value");
         let $children = $("<div></div>").addClass("children");
-        let $bullet = $("<span>O</span>").addClass("bullet");
+        let $bullet = $("<span>&#x02299;</span>").addClass("bullet");
 
         $node.append($value);
         $node.append($children);
