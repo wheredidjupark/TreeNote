@@ -17,7 +17,7 @@ $(document).ready(function() {
         let $node = $("<div></div>").addClass("node");
         let $value = $("<div  contenteditable></div>").addClass("value");
         let $children = $("<div></div>").addClass("children");
-        let $bullet = $("<span>&#x02126;</span>").addClass("bullet").addClass("hoverMenu");
+        let $bullet = $("<span>&#x02126;</span>").addClass("bullet");
 
         $node.append($value);
         $node.append($children);
@@ -243,8 +243,9 @@ $(document).ready(function() {
                     timeoutId = setTimeout(function() {
                         console.log("hovering");
                         $thisNode.addClass("highlighted");
-                         // let $menubar = $("<div>Menu</div>").addClass("hoverMenu").addClass("ctrlBar");
-                         // $this.append($menubar);
+
+                        let $menubar = $("<div>Menu</div>").addClass("ctrlBar");
+                        $thisNode.append($menubar);
                     }, 200);
                 }
             });
@@ -255,7 +256,19 @@ $(document).ready(function() {
                 if (timeoutId) {
                     console.log("leaving");
                     $thisNode.removeClass("highlighted");
+                    // $thisNode.children(".ctrlBar").remove();
+                    clearTimeout(timeoutId);
+                    timeoutId = false;
+                }
+            });
 
+            $("#app").on("mouseleave", ".ctrlBar", function() {
+                let $thisNode = $(this).closest(".node");
+                $thisNode.children(".ctrlBar").remove();
+
+                if (timeoutId) {
+                    console.log("leaving");
+                    $thisNode.removeClass("highlighted");
                     clearTimeout(timeoutId);
                     timeoutId = false;
                 }
