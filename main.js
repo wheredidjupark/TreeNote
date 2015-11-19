@@ -245,7 +245,7 @@ $(document).ready(function() {
                         $thisNode.addClass("highlighted");
                          // let $menubar = $("<div>Menu</div>").addClass("hoverMenu").addClass("ctrlBar");
                          // $this.append($menubar);
-                    }, 500);
+                    }, 200);
                 }
             });
 

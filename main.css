@@ -2,7 +2,7 @@
     max-width: 800px;
     margin: 25px auto 25px;
     background-color: white;
-    padding: 30px;
+    padding: 35px 40px;
     min-height: 85%;
     -webkit-box-shadow: 0px 0px 25px 1px rgba(0, 0, 0, 0.55);
     -moz-box-shadow: 0px 0px 25px 1px rgba(0, 0, 0, 0.55);
@@ -75,5 +75,5 @@ footer{
 }
 */
 .highlighted {
-	background-color: #efefef;
+	background-color: #f3f3f3;
 }
