@@ -17,7 +17,7 @@ $(document).ready(function() {
         let $node = $("<div></div>").addClass("node");
         let $value = $("<div  contenteditable></div>").addClass("value");
         let $children = $("<div></div>").addClass("children");
-        let $bullet = $("<span>&#x02299;</span>").addClass("bullet");
+        let $bullet = $("<span>&#x02126;</span>").addClass("bullet");
 
         $node.append($value);
         $node.append($children);
@@ -44,9 +44,7 @@ $(document).ready(function() {
             $("#app").append(createNode());
         }
 
-
-        //if there is no content in the app, create a node.
-        //Done as a safeguard.
+        //implemented as a safeguard in the case the app doesn't contain any content.
         let appContent = $("#app").text();
         if (appContent.length === 0) {
             $("#app").append(createNode());
@@ -240,13 +238,12 @@ $(document).ready(function() {
 
             $("#app").on("mouseenter", ".bullet", function() {
                 let $thisNode = $(this).closest(".node");
-
+                let $this = $(this);
                 if (!timeoutId) {
                     timeoutId = setTimeout(function() {
                         console.log("hovering");
-                        // let $menubar = $("<div>Menu</div>").addClass("menubar");
-                        // $thisNode.prepend($menubar);
-
+                         let $menubar = $("<span>Menu</span>").addClass("menubar");
+                         $thisNode.append($menubar);
                     }, 500);
                 }
             });
@@ -256,9 +253,10 @@ $(document).ready(function() {
 
                 if (timeoutId) {
                     console.log("leaving");
+                    $thisNode.children(".menubar").remove();
+
                     clearTimeout(timeoutId);
                     timeoutId = false;
-                    // $thisNode.children(".menubar").remove();
                 }
             });
         };

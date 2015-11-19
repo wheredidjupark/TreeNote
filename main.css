@@ -22,6 +22,7 @@ body {
 
 .node {
     margin: 5px 0;
+    position: relative;
 }
 
 .node > .value:focus {
@@ -66,4 +67,10 @@ footer{
 	font-family: Helvetica;
 	text-align: center;
 	font-size: 10px;
+}
+
+.menubar {
+	position: absolute;
+	top: 10px;
+	left: -10px;
 }
