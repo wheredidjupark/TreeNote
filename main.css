@@ -2,7 +2,7 @@
     max-width: 800px;
     margin: 25px auto 25px;
     background-color: white;
-    padding: 50px;
+    padding: 30px;
     min-height: 85%;
     -webkit-box-shadow: 0px 0px 25px 1px rgba(0, 0, 0, 0.55);
     -moz-box-shadow: 0px 0px 25px 1px rgba(0, 0, 0, 0.55);
@@ -30,7 +30,7 @@ body {
 }
 
 .bullet {
-    margin-left: -20px;
+	position: relative;
     min-height: 5px;
     min-width: 5px;
     -webkit-touch-callout: none;
@@ -47,7 +47,7 @@ body {
 
 .value {
     margin-left: 6px;
-    width: 100%;
+    min-width: 50%;
     display: inline-block;
 }
 
@@ -68,9 +68,12 @@ footer{
 	text-align: center;
 	font-size: 10px;
 }
-
+/*
 .menubar {
 	position: absolute;
-	top: 10px;
-	left: -10px;
+	margin: -50px;
+}
+*/
+.highlighted {
+	background-color: #efefef;
 }

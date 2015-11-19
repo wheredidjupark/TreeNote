@@ -17,7 +17,7 @@ $(document).ready(function() {
         let $node = $("<div></div>").addClass("node");
         let $value = $("<div  contenteditable></div>").addClass("value");
         let $children = $("<div></div>").addClass("children");
-        let $bullet = $("<span>&#x02126;</span>").addClass("bullet");
+        let $bullet = $("<span>&#x02126;</span>").addClass("bullet").addClass("hoverMenu");
 
         $node.append($value);
         $node.append($children);
@@ -242,8 +242,9 @@ $(document).ready(function() {
                 if (!timeoutId) {
                     timeoutId = setTimeout(function() {
                         console.log("hovering");
-                         let $menubar = $("<span>Menu</span>").addClass("menubar");
-                         $thisNode.append($menubar);
+                        $thisNode.addClass("highlighted");
+                         // let $menubar = $("<div>Menu</div>").addClass("hoverMenu").addClass("ctrlBar");
+                         // $this.append($menubar);
                     }, 500);
                 }
             });
@@ -253,7 +254,7 @@ $(document).ready(function() {
 
                 if (timeoutId) {
                     console.log("leaving");
-                    $thisNode.children(".menubar").remove();
+                    $thisNode.removeClass("highlighted");
 
                     clearTimeout(timeoutId);
                     timeoutId = false;
