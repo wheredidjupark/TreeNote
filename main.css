@@ -30,7 +30,7 @@ body {
 }
 
 .bullet {
-	position: relative;
+	position: absolute;
     min-height: 5px;
     min-width: 5px;
     -webkit-touch-callout: none;
@@ -46,8 +46,9 @@ body {
 }
 
 .value {
-    margin-left: 6px;
+    margin-left: 20px;
     min-width: 50%;
+    max-width: 100%;
     display: inline-block;
 }
 
@@ -71,7 +72,7 @@ footer{
 
 .ctrlBar {
 	position: absolute;
-	top: 0px;
+	top: 15px;
 	height: 50px;
 	width: 50px;
 	background-color: green;
