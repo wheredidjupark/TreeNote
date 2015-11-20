@@ -80,27 +80,35 @@ $(document).ready(function() {
                     // $node = node || $node;
                     let $adjacent = $node.prev();
 
-                    //if thisNode does not have an older sibling, return the current node's parent
                     if ($adjacent.length === 0) {
-                        //closest 
+                        //if thisNode does not have an older sibling, return the current node's parent
 
                         return $node.parent().closest(".node");
                     } else {
                         //has an older sibling
                         let childrenNodes = $adjacent.children(".children").children(".node");
                         let children = $adjacent.children(".children");
+
+
                         if (childrenNodes.length === 0 || $(children).hasClass("hidden")) {
                             //the older sibling has no children, return the older sibling
                             return $adjacent;
                         } else {
                             //the older sibling has children.
+
+                            //the number of children node
                             let length = $adjacent.children(".children").children(".node").length;
+                            //the last chlid node (i.e. adjacent node)
                             $adjacent = $adjacent.children(".children").children(".node")[length - 1];
+                            //the last child's div element that keeps children node
                             let $curChildren = $($adjacent).children(".children");
 
                             while ($($adjacent).children(".children").children(".node").length > 0 && !$curChildren.hasClass("hidden")) {
+                                //the number of children nodes in the adjacent node
                                 length = $($adjacent).children(".children").children(".node").length;
+                                //the adjacent node's last child node is set as the new adjacent node.
                                 $adjacent = $($adjacent).children(".children").children(".node")[length - 1];
+                                //the new adjacent node's div that keeps children node
                                 $curChildren = $($adjacent).children(".children");
 
                             }
