@@ -62,7 +62,10 @@ body {
 }
 
 .bullet-clicked {
-    background-color: orange;
+	background-color: orange;
+	max-width: 10.375px;
+	max-height: 20px;
+	opacity: 0.5;
 }
 
 footer {
@@ -74,7 +77,7 @@ footer {
 .ctrlBar {
     position: absolute;
     top: 15px;
-    height: 70px;
+
     width: 90px;
     background-color: yellow;
     z-index: 10;
