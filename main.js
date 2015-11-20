@@ -67,7 +67,7 @@ $(document).ready(function() {
 
             $("#app").on("keydown", ".value", function(e) {
 
-                console.log("You pressed the key with the following keycode", e.keyCode);
+                // console.log("You pressed the key with the following keycode", e.keyCode);
                 let textVal = $(this).text();
                 let htmlVal = $(this).html();
                 let $node = $(this).closest(".node");
@@ -218,20 +218,46 @@ $(document).ready(function() {
 
                 //DELETE: Remove the node. Focus on the previous node.
                 if (e.keyCode === KEY_DELETE) {
-
                     if (htmlVal.toString().length === 0) {
                         e.preventDefault();
+                        let childrenNodes = $node.children(".children").children(".node");
+                        if (childrenNodes.length === 0) {
+                            if ($("#app").children().length > 1 || $node.parent().closest(".node").length > 0) {
+                                //if there's more than one main node & the node has a parent node
+                                moveOneUp();
+                                //http://stackoverflow.com/questions/499126/jquery-set-cursor-position-in-text-area
+                                $node.remove();
+                                //if the current node is not empty & the previous node is empty + caret at the beginning, delete the previous node.
+                            }
 
+                        } else {
+                            // window.alert("There are children in the node");
+                            console.log("Cannot delete node; the node contains at least one child node")
+                        }
+                    }
+
+                }
+
+                if (e.keyCode === KEY_DELETE && e.shiftKey) {
+                    if (htmlVal.toString().length === 0) {
+                        e.preventDefault();
                         if ($("#app").children().length > 1 || $node.parent().closest(".node").length > 0) {
+                            //if there's more than one main node & the node has a parent node
                             moveOneUp();
                             //http://stackoverflow.com/questions/499126/jquery-set-cursor-position-in-text-area
                             $node.remove();
                             //if the current node is not empty & the previous node is empty + caret at the beginning, delete the previous node.
+
+
+                        } else {
+                            // window.alert("There are children in the node");
+                            console.log("Cannot delete node; the app must contain at least one primary node")
                         }
-
                     }
-
                 }
+
+
+
 
                 //TAB: Move the node inside of its previous sibling node. Label the moved node as a child node.
                 if (e.keyCode === KEY_TAB && !e.shiftKey) {
@@ -285,7 +311,7 @@ $(document).ready(function() {
                 if (e.keyCode === KEY_ENTER) {
                     e.preventDefault();
                     saveData();
-                    $node.children(".value").caret(-1);
+                    $node.children(".value").focus();
                 }
             });
         };
