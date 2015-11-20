@@ -29,8 +29,8 @@ $(document).ready(function() {
     };
 
 
-    let removeNode = function(context) {
-        let $node = $(context).closest(".node");
+    let removeNode = function(node) {
+        let $node = $(node);
         if ($("#app").children().length > 1 || $node.parent().closest(".node").length > 0) {
             $node.remove();
         }
@@ -144,13 +144,29 @@ $(document).ready(function() {
 
                 let moveOneUp = function() {
                     let $upNode = $(findOneUp());
-                    $upNode.children(".value").focus();
+                    if ($upNode.length !== 0) {
+                        if ($upNode.children(".value").html().toString().length === 0) {
+                            $upNode.children(".value").focus();
+                        } else {
+                            $upNode.children(".value").caret(-1);
+                        }
+
+                    }
                     return $upNode;
                 };
 
                 let moveOneDown = function() {
                     let $downNode = $(findOneDown());
-                    $downNode.children(".value").focus();
+                    if ($downNode.length !== 0) {
+                        if ($downNode.children(".value").html().toString().length === 0) {
+                            $downNode.children(".value").focus();
+                        } else {
+                            $downNode.children(".value").caret(-1);
+                        }
+
+                    }
+                    //option 2 implementation that resembles how documents move
+                    // $downNode.children(".value").focus();
                     return $downNode;
                 };
 
@@ -261,8 +277,15 @@ $(document).ready(function() {
                     if (html.toString().length === 0) {
                         e.preventDefault();
                         $(this).toggleClass("hidden", true);
-                        $node.children(".value").focus();
+                        $node.children(".value").caret(-1);
                     }
+                    saveData();
+                }
+
+                if (e.keyCode === KEY_ENTER) {
+                    e.preventDefault();
+                    saveData();
+                    $node.children(".value").caret(-1);
                 }
             });
         };
@@ -279,6 +302,7 @@ $(document).ready(function() {
 
             $("#app").on("mouseenter", ".bullet", function() {
                 let $node = $(this).closest(".node");
+                // let childrenNode = $node.find(".node");
 
                 if (!timeoutId) {
                     timeoutId = setTimeout(function() {
@@ -341,21 +365,21 @@ $(document).ready(function() {
 
     let clickEvents = function() {
 
-        let expand = function(context) {
+        let expand = function(node) {
 
-            let $node = $(context).closest(".node");
-            let $nodeChildren = $node.children(".children");
+            let $nodeChildren = $(node).children(".children");
 
             if ($nodeChildren.children(".node").length > 0) {
                 $nodeChildren.toggleClass("hidden");
-                $(context).toggleClass("bullet-clicked");
+                $(node).toggleClass("bullet-clicked");
             }
         };
 
         //expands the node to reveal its children nodes
         let clickBullet = function() {
             $("#app").on("click", ".bullet", function() {
-                expand(this);
+                let node = $(this).closest(".node");
+                expand(node);
                 saveData();
             });
         };
@@ -395,7 +419,8 @@ $(document).ready(function() {
             });
 
             $("#app").on("click", ".deleteNode", function() {
-                removeNode(this);
+                let node = $(this).closest(".node");
+                removeNode(node);
                 saveData();
             });
 
