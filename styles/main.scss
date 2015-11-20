@@ -16,13 +16,20 @@
         height: 100%;
         background-color: white;
         margin: 0;
-        footer {
-            font-family: Helvetica;
-            text-align: center;
-            font-size: 10px;
+    }
+
+    #header {
+        margin: 0 auto;
+        text-align: center;
+        a{
+            font-family: "Curlz MT";
+            font-size: 30px;
+            &:hover{
+                text-decoration: none;
+            }
         }
     }
-    
+
     #app {
         max-width: 800px;
         margin: 25px auto 25px;
@@ -109,4 +116,10 @@
                 }
             }
         }
+    }
+    
+    #footer {
+        font-family: Helvetica;
+        text-align: center;
+        font-size: 10px;
     }
