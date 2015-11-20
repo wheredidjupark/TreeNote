@@ -33,6 +33,8 @@ $(document).ready(function() {
         let $node = $(node);
         if ($("#app").children().length > 1 || $node.parent().closest(".node").length > 0) {
             $node.remove();
+        } else {
+            console.log("Cannot delete node; the app must contain at least one primary node");
         }
     };
 
@@ -222,13 +224,13 @@ $(document).ready(function() {
                         e.preventDefault();
                         let childrenNodes = $node.children(".children").children(".node");
                         if (childrenNodes.length === 0) {
-                            if ($("#app").children().length > 1 || $node.parent().closest(".node").length > 0) {
-                                //if there's more than one main node & the node has a parent node
-                                moveOneUp();
-                                //http://stackoverflow.com/questions/499126/jquery-set-cursor-position-in-text-area
-                                $node.remove();
-                                //if the current node is not empty & the previous node is empty + caret at the beginning, delete the previous node.
-                            }
+
+                            //if there's more than one main node & the node has a parent node
+                            moveOneUp();
+                            //http://stackoverflow.com/questions/499126/jquery-set-cursor-position-in-text-area
+                            removeNode($node);
+                            //if the current node is not empty & the previous node is empty + caret at the beginning, delete the previous node.
+
 
                         } else {
                             // window.alert("There are children in the node");
@@ -241,18 +243,12 @@ $(document).ready(function() {
                 if (e.keyCode === KEY_DELETE && e.shiftKey) {
                     if (htmlVal.toString().length === 0) {
                         e.preventDefault();
-                        if ($("#app").children().length > 1 || $node.parent().closest(".node").length > 0) {
-                            //if there's more than one main node & the node has a parent node
-                            moveOneUp();
-                            //http://stackoverflow.com/questions/499126/jquery-set-cursor-position-in-text-area
-                            $node.remove();
-                            //if the current node is not empty & the previous node is empty + caret at the beginning, delete the previous node.
+                        //if there's more than one main node & the node has a parent node
+                        moveOneUp();
+                        //http://stackoverflow.com/questions/499126/jquery-set-cursor-position-in-text-area
+                        removeNode($node);
+                        //if the current node is not empty & the previous node is empty + caret at the beginning, delete the previous node.
 
-
-                        } else {
-                            // window.alert("There are children in the node");
-                            console.log("Cannot delete node; the app must contain at least one primary node")
-                        }
                     }
                 }
 
