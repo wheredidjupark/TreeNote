@@ -19,13 +19,12 @@ $(document).ready(function() {
         let $note = $("<div contenteditable></div>").addClass("note").addClass("hidden");
         let $children = $("<div></div>").addClass("children");
         let $bullet = $("<span>&#x02126;</span>").addClass("bullet");
-        // let $expandButton = $("<span>O</span>").addClass("expandButton");
+
 
         $node.append($value);
         $node.append($note);
         $node.append($children);
         $node.prepend($bullet);
-        // $node.prepend($expandButton);
 
         return $node.clone();
     };
@@ -77,7 +76,8 @@ $(document).ready(function() {
                 let $node = $(this).closest(".node");
 
                 //finds the nearest previous sibling node or closest parent node
-                let findOneUp = function() {
+                let findOneUp = function(node) {
+                    // $node = node || $node;
                     let $adjacent = $node.prev();
 
                     //if thisNode does not have an older sibling, return the current node's parent
@@ -111,7 +111,8 @@ $(document).ready(function() {
                 };
 
 
-                let findOneDown = function() {
+                let findOneDown = function(node) {
+                    $node = node || $node;
                     let $childrenNodes = $node.find(".node");
 
                     if ($childrenNodes.length !== 0 && !$node.children(".children").hasClass("hidden")) {
@@ -380,22 +381,24 @@ $(document).ready(function() {
                 saveData();
             });
 
-            $("#app").on("mouseleave", ".ctrlBar", function() {
-                let $node = $(this).closest(".node");
-                $node.children(".ctrlBar").remove();
-                if (timeoutId) {
-                    clearTimeout(timeoutId);
-                    timeoutId = false;
-                }
-                saveData();
-            });
+            // $("#app").on("mouseleave", ".ctrlBar", function() {
+            //     let $node = $(this).closest(".node");
+            //     $node.children(".ctrlBar").remove();
+            //     if (timeoutId) {
+            //         clearTimeout(timeoutId);
+            //         timeoutId = false;
+            //     }
+            //     saveData();
+            // });
 
-            $("#app").on("mouseenter", ".node", function() {
-                console.log("you entered the node!");
-            });
+            // $("#app").on("mouseenter", ".node", function() {
+            //     console.log("you entered the node!");
+            // });
 
             $("#app").on("mouseleave", ".node", function() {
-                console.log("you entered the node!");
+                console.log("you left the node!")
+                let $node = $(this);
+                $node.children(".ctrlBar").remove();
             });
         };
 
@@ -445,11 +448,12 @@ $(document).ready(function() {
             });
 
             $("#app").on("click", ".addNote", function() {
+                let $node = $(this).closest(".node");
 
                 let $note = $(this).closest(".node").children(".note");
                 $note.toggleClass("hidden", false);
+                $node.children(".ctrlBar").remove();
                 $note.focus();
-
             });
 
             $("#app").on("click", ".deleteNote", function() {
@@ -457,7 +461,9 @@ $(document).ready(function() {
                 let $note = $(this).closest(".node").children(".note");
                 $note.text("");
                 $note.toggleClass("hidden", true);
+                $node.children(".ctrlBar").remove();
                 $node.children(".value").focus();
+                saveData();
             });
 
             $("#app").on("click", ".deleteNode", function() {
