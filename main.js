@@ -389,7 +389,7 @@ $(document).ready(function() {
 
     let clickEvents = function() {
 
-        let expand = function(node) {
+        let toggleExpand = function(node) {
 
             let $nodeChildren = $(node).children(".children");
 
@@ -402,10 +402,12 @@ $(document).ready(function() {
         //expands the node to reveal its children nodes
         let clickBullet = function() {
             $("#app").on("click", ".bullet", function() {
-                let node = $(this).closest(".node");
-                expand(node);
+                let $node = $(this).closest(".node");
+                toggleExpand($node);
                 saveData();
+                $node.children(".value").focus();
             });
+
         };
 
         //completes the given task
