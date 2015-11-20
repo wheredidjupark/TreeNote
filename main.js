@@ -252,11 +252,11 @@ $(document).ready(function() {
                             "Complete Task": "completeTask"
                         }, {
                             "Uncomplete Task": "uncompleteTask"
-                        },{
+                        }, {
                             "Add Note": "addNote"
                         }, {
                             "Delete Note": "deleteNote"
-                        },{
+                        }, {
                             "Delete": "deleteNode"
                         }];
 
@@ -302,23 +302,28 @@ $(document).ready(function() {
     };
 
     let clickEvents = function() {
+
+        var expand = function(context) {
+            console.log("click");
+            let $thisNode = $(context).closest(".node");
+            let $thisNodeChildren = $thisNode.children(".children");
+
+            if ($thisNodeChildren.children(".node").length > 0) {
+                $thisNodeChildren.toggleClass("hidden");
+                $(context).toggleClass("bullet-clicked");
+            }
+            saveData();
+        };
+
         let clickBullet = function() {
             $("#app").on("click", ".bullet", function() {
-                console.log("click");
-                let $thisNode = $(this).closest(".node");
-                let $thisNodeChildren = $thisNode.children(".children");
-
-                if ($thisNodeChildren.children(".node").length > 0) {
-                    $thisNodeChildren.toggleClass("hidden");
-                    $(this).toggleClass("bullet-clicked");
-                }
-                saveData();
+                expand(this);
             });
         };
 
-        let clickCtrlBar = function(){
+        let clickCtrlBar = function() {
             //complete task toggles
-            $("#app").on("click", ".completeTask", function(){
+            $("#app").on("click", ".completeTask", function() {
                 console.log("clicked completeTask!");
                 let $thisNode = $(this).closest(".node");
                 $thisNode.addClass("completed"); //indicate complete tag on node
@@ -327,17 +332,17 @@ $(document).ready(function() {
                 saveData();
             });
 
-            $("#app").on("click", ".addNote", function(){
+            $("#app").on("click", ".addNote", function() {
                 console.log("clicked addNote!");
             });
 
-            $("#app").on("click", ".deleteNode", function(){
+            $("#app").on("click", ".deleteNode", function() {
                 let $thisNode = $(this).closest(".node");
                 $thisNode.remove();
                 saveData();
             });
 
-            $("#app").on("click", ".uncompleteTask", function(){
+            $("#app").on("click", ".uncompleteTask", function() {
                 let $thisNode = $(this).closest(".node");
                 $thisNode.removeClass("completed");
                 // $(this).before($("<li>Complete Task</li>").addClass("completeTask"));
