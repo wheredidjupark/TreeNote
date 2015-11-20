@@ -230,9 +230,14 @@ $(document).ready(function() {
                         if (childrenNodes.length === 0) {
 
                             //if there's more than one main node & the node has a parent node
-                            moveOneUp();
+                            if (findOneUp().length !== 0) {
+                                moveOneUp();
+                            } else {
+                                moveOneDown();
+                            }
                             //http://stackoverflow.com/questions/499126/jquery-set-cursor-position-in-text-area
                             removeNode($node);
+
                             //if the current node is not empty & the previous node is empty + caret at the beginning, delete the previous node.
 
 
