@@ -85,23 +85,25 @@ $(document).ready(function() {
                         return $node.parent().closest(".node");
                     } else {
                         //has an older sibling
-
-                        if ($adjacent.children(".children").children(".node").length === 0) {
-                            //the older sibling has no children.
+                        let childrenNodes = $adjacent.children(".children").children(".node");
+                        let children = $adjacent.children(".children");
+                        if (childrenNodes.length === 0 || $(children).hasClass("hidden")) {
+                            //the older sibling has no children, return the older sibling
                             return $adjacent;
                         } else {
                             //the older sibling has children.
                             let length = $adjacent.children(".children").children(".node").length;
-                            let adjacent = $adjacent.children(".children").children(".node")[length - 1];
+                            $adjacent = $adjacent.children(".children").children(".node")[length - 1];
+                            let $curChildren = $($adjacent).children(".children");
 
+                            while ($($adjacent).children(".children").children(".node").length > 0 && !$curChildren.hasClass("hidden")) {
+                                length = $($adjacent).children(".children").children(".node").length;
+                                $adjacent = $($adjacent).children(".children").children(".node")[length - 1];
+                                $curChildren = $($adjacent).children(".children");
 
-
-                            while ($(adjacent).children(".children").children(".node").length > 0) {
-                                length = $(adjacent).children(".children").children(".node").length;
-                                adjacent = $(adjacent).children(".children").children(".node")[length - 1];
                             }
 
-                            return adjacent;
+                            return $adjacent;
                         }
                     }
                 };
@@ -176,7 +178,7 @@ $(document).ready(function() {
                 if (e.keyCode === KEY_ENTER) {
                     e.preventDefault();
                     $node.after(createNode());
-                    moveOneDown(); // $node.next().children(".value").focus();
+                    $node.next().children(".value").focus();
                 }
 
                 //DOWNARROW: focus on the next node
