@@ -30,8 +30,10 @@ $(document).ready(function() {
 
 
     let removeNode = function(context) {
-        let $thisNode = $(context).closest(".node");
-        $thisNode.remove();
+        let $node = $(context).closest(".node");
+        if ($("#app").children().length > 1 || $node.parent().closest(".node").length > 0) {
+            $node.remove();
+        }
     };
 
 
@@ -68,17 +70,17 @@ $(document).ready(function() {
                 console.log("You pressed the key with the following keycode", e.keyCode);
                 let textVal = $(this).text();
                 let htmlVal = $(this).html();
-                let $thisNode = $(this).closest(".node");
+                let $node = $(this).closest(".node");
 
                 //finds the nearest previous sibling node or closest parent node
                 let findOneUp = function() {
-                    let $adjacent = $thisNode.prev();
+                    let $adjacent = $node.prev();
 
                     //if thisNode does not have an older sibling, return the current node's parent
                     if ($adjacent.length === 0) {
                         //closest 
 
-                        return $thisNode.parent().closest(".node");
+                        return $node.parent().closest(".node");
                     } else {
                         //has an older sibling
 
@@ -104,28 +106,26 @@ $(document).ready(function() {
 
 
                 let findOneDown = function() {
-                    let $adjacent = $thisNode.find(".node");
-                    //console.log($adjacent);
-                    if ($adjacent.length !== 0) {
+                    let $childrenNodes = $node.find(".node");
+
+                    if ($childrenNodes.length !== 0) {
                         //if children exist
-                        // console.log("child");
-                        return $adjacent[0];
+                        return $childrenNodes[0];
                     } else {
                         //if child doesn't exist, look into its sibling.
-                        let $sibling = $thisNode.next();
-                        if ($sibling.length > 0) {
-                            //if sibling exists, return the sibling.
-                            // console.log("sibling");
-                            return $sibling;
+                        let $nextNode = $node.next();
+                        if ($nextNode.length > 0) {
+                            // return nextNode, node's sibling.
+                            return $nextNode;
                         } else {
                             //if the sibling does not exist, then move to its parent's sibling
                             // console.log("parent's sibling");
-                            let $parent = $thisNode.parent().closest(".node");
+                            let $parent = $node.parent().closest(".node");
                             let $parentSibling = $parent.next();
                             while ($parentSibling.length === 0) {
                                 //if sibling doesn't exist
                                 if ($parent.length === 0) {
-                                    return $thisNode;
+                                    return $node;
                                 }
                                 $parent = $parent.parent().closest(".node");
                                 $parentSibling = $parent.next();
@@ -143,19 +143,22 @@ $(document).ready(function() {
 
 
                 let moveOneUp = function() {
-                    let $oneup = $(findOneUp());
-                    $oneup.children(".value").focus();
+                    let $upNode = $(findOneUp());
+                    $upNode.children(".value").focus();
+                    return $upNode;
                 };
 
                 let moveOneDown = function() {
-                    $(findOneDown()).children(".value").focus();
+                    let $downNode = $(findOneDown());
+                    $downNode.children(".value").focus();
+                    return $downNode;
                 };
 
                 //ENTER: Create a new sibling node. Focus on the newly created sibling node.
                 if (e.keyCode === KEY_ENTER) {
                     e.preventDefault();
-                    $thisNode.after(createNode());
-                    $thisNode.next().children(".value").focus();
+                    $node.after(createNode());
+                    moveOneDown(); // $node.next().children(".value").focus();
                 }
 
                 //DOWNARROW: focus on the next node
@@ -174,7 +177,15 @@ $(document).ready(function() {
                 if (e.keyCode === KEY_LEFTARROW) {
                     if ($(this).caret() === 0) {
                         e.preventDefault();
-                        moveOneUp();
+                        let upNode = moveOneUp();
+
+                        if (upNode.children(".value").html().toString().length === 0) {
+                            upNode.children(".value").focus();
+                        } else {
+
+                            upNode.children(".value").caret(-1);
+                        }
+
                     }
                 }
 
@@ -185,7 +196,7 @@ $(document).ready(function() {
                     if ($(this).caret() === length) {
                         e.preventDefault();
                         moveOneDown();
-                        // let $nextNodeValue = $thisNode.next().children(".value");
+                        // let $nextNodeValue = $node.next().children(".value");
                         // $nextNodeValue.focus();
                     }
                 }
@@ -196,10 +207,10 @@ $(document).ready(function() {
                     if (htmlVal.toString().length === 0) {
                         e.preventDefault();
 
-                        if ($("#app").children().length > 1 || $thisNode.parent().closest(".node").length > 0) {
+                        if ($("#app").children().length > 1 || $node.parent().closest(".node").length > 0) {
                             moveOneUp();
                             //http://stackoverflow.com/questions/499126/jquery-set-cursor-position-in-text-area
-                            $thisNode.remove();
+                            $node.remove();
                             //if the current node is not empty & the previous node is empty + caret at the beginning, delete the previous node.
                         }
 
@@ -211,10 +222,10 @@ $(document).ready(function() {
                 if (e.keyCode === KEY_TAB && !e.shiftKey) {
                     e.preventDefault();
 
-                    let $prevNode = $thisNode.prev();
-                    let $prevNodeChildren = $thisNode.prev().children(".children");
+                    let $prevNode = $node.prev();
+                    let $prevNodeChildren = $node.prev().children(".children");
 
-                    $prevNodeChildren.append($thisNode);
+                    $prevNodeChildren.append($node);
 
                     if ($prevNodeChildren.hasClass("hidden")) {
                         $prevNodeChildren.toggleClass("hidden", false);
@@ -229,8 +240,8 @@ $(document).ready(function() {
 
                 if (e.keyCode === KEY_TAB && e.shiftKey) {
                     e.preventDefault();
-                    let $parentNode = $thisNode.parent().closest(".node");
-                    $parentNode.after($thisNode);
+                    let $parentNode = $node.parent().closest(".node");
+                    $parentNode.after($node);
                     $(this).focus();
 
                 }
@@ -244,14 +255,14 @@ $(document).ready(function() {
         let keydownNote = function() {
             $("#app").on("keydown", ".note", function(e) {
                 let html = $(this).html();
-                let $thisNode =$(this).closest(".node");
+                let $node = $(this).closest(".node");
 
                 if (e.keyCode === KEY_DELETE) {
-                    
+
                     if (html.toString().length === 0) {
                         e.preventDefault();
                         $(this).toggleClass("hidden", true);
-                        $thisNode.children(".value").focus();
+                        $node.children(".value").focus();
                     }
                 }
             });
@@ -268,12 +279,12 @@ $(document).ready(function() {
             let timeoutId = false;
 
             $("#app").on("mouseenter", ".bullet", function() {
-                let $thisNode = $(this).closest(".node");
-                let $this = $(this);
+                let $node = $(this).closest(".node");
+
                 if (!timeoutId) {
                     timeoutId = setTimeout(function() {
-                        console.log("hovering");
-                        $thisNode.addClass("highlighted");
+
+                        $node.addClass("highlighted");
                         let $menubar = $("<div></div>").addClass("ctrlBar");
                         let $list = $("<ul></ul>");
 
@@ -298,17 +309,16 @@ $(document).ready(function() {
                         }
 
                         $menubar.append($list);
-                        $thisNode.append($menubar);
+                        $node.append($menubar);
                     }, 200);
                 }
             });
 
             $("#app").on("mouseleave", ".bullet", function() {
-                let $thisNode = $(this).closest(".node");
+                let $node = $(this).closest(".node");
 
                 if (timeoutId) {
-                    console.log("leaving");
-                    $thisNode.removeClass("highlighted");
+                    $node.removeClass("highlighted");
                     clearTimeout(timeoutId);
                     timeoutId = false;
                 }
@@ -317,13 +327,9 @@ $(document).ready(function() {
             });
 
             $("#app").on("mouseleave", ".ctrlBar", function() {
-                let $thisNode = $(this).closest(".node");
-                $thisNode.children(".ctrlBar").remove();
-
-
-
+                let $node = $(this).closest(".node");
+                $node.children(".ctrlBar").remove();
                 if (timeoutId) {
-                    console.log("leaving");
                     clearTimeout(timeoutId);
                     timeoutId = false;
                 }
@@ -338,11 +344,11 @@ $(document).ready(function() {
 
         let expand = function(context) {
 
-            let $thisNode = $(context).closest(".node");
-            let $thisNodeChildren = $thisNode.children(".children");
+            let $node = $(context).closest(".node");
+            let $nodeChildren = $node.children(".children");
 
-            if ($thisNodeChildren.children(".node").length > 0) {
-                $thisNodeChildren.toggleClass("hidden");
+            if ($nodeChildren.children(".node").length > 0) {
+                $nodeChildren.toggleClass("hidden");
                 $(context).toggleClass("bullet-clicked");
             }
         };
@@ -360,22 +366,22 @@ $(document).ready(function() {
             //complete task toggles
             $("#app").on("click", ".completeTask", function() {
 
-                let $thisNode = $(this).closest(".node");
-                $thisNode.toggleClass("completed", true); //indicate complete tag on node
+                let $node = $(this).closest(".node");
+                $node.toggleClass("completed", true); //indicate complete tag on node
 
                 saveData();
             });
 
 
             $("#app").on("click", ".incompleteTask", function() {
-                let $thisNode = $(this).closest(".node");
-                $thisNode.toggleClass("completed", false);
+                let $node = $(this).closest(".node");
+                $node.toggleClass("completed", false);
 
                 saveData();
             });
 
             $("#app").on("click", ".addNote", function() {
-                console.log("clicked addNote!");
+
                 let $note = $(this).closest(".node").children(".note");
                 $note.toggleClass("hidden", false);
                 $note.focus();
@@ -383,9 +389,10 @@ $(document).ready(function() {
             });
 
             $("#app").on("click", ".deleteNote", function() {
-                console.log("clicked deleteNote");
+                let $node = $(this).closest(".node");
                 let $note = $(this).closest(".node").children(".note");
                 $note.text("").toggleClass("hidden", true);
+                $node.children(".value").focus();
             });
 
             $("#app").on("click", ".deleteNode", function() {
