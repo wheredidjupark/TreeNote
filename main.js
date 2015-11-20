@@ -16,10 +16,12 @@ $(document).ready(function() {
 
         let $node = $("<div></div>").addClass("node");
         let $value = $("<div  contenteditable></div>").addClass("value");
+        // let $note = $("<div contenteditable></div>").addClass("note");
         let $children = $("<div></div>").addClass("children");
         let $bullet = $("<span>&#x02126;</span>").addClass("bullet");
 
         $node.append($value);
+        // $node.append($note);
         $node.append($children);
         $node.prepend($bullet);
 
@@ -243,8 +245,26 @@ $(document).ready(function() {
                     timeoutId = setTimeout(function() {
                         console.log("hovering");
                         $thisNode.addClass("highlighted");
+                        let $menubar = $("<div></div>").addClass("ctrlBar");
+                        let $list = $("<ul></ul>");
 
-                        let $menubar = $("<div>Menu</div>").addClass("ctrlBar");
+                        let controls = [{
+                            "Complete Task": "completeTask"
+                        }, {
+                            "Add Note": "addNote"
+                        }, {
+                            "Delete": "deleteTask"
+                        }];
+
+                        for (var i = 0; i < controls.length; i++) {
+                            var obj = controls[i];
+                            for (var key in obj) {
+                                let $item = $("<li>" + key + "</li>").addClass(obj[key]);
+                                $list.append($item);
+                            }
+                        }
+
+                        $menubar.append($list);
                         $thisNode.append($menubar);
                     }, 200);
                 }
@@ -256,7 +276,6 @@ $(document).ready(function() {
                 if (timeoutId) {
                     console.log("leaving");
                     $thisNode.removeClass("highlighted");
-                    // $thisNode.children(".ctrlBar").remove();
                     clearTimeout(timeoutId);
                     timeoutId = false;
                 }
@@ -292,10 +311,27 @@ $(document).ready(function() {
                 saveData();
             });
         };
+
+        let clickCtrlBar = function(){
+            //complete task toggles
+            $("#app").on("click", ".completeTask", function(){
+                console.log("clicked completeTask!");
+                let $thisNode = $(this).closest(".node");
+                $thisNode.toggleClass("completed"); //indicate complete tag on node
+            });
+
+            $("#app").on("click", ".addNote", function(){
+                console.log("clicked addNote!");
+            });
+
+            $("#app").on("click", ".deleteTask", function(){
+                let $thisNode = $(this).closest(".node");
+                $thisNode.remove();
+            });
+        };
         clickBullet();
+        clickCtrlBar();
     };
-
-
 
     initialize();
     keydownEvents();
