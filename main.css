@@ -109,3 +109,6 @@ footer {
 	text-decoration: line-through;
 }
 
+.completed .completeTask {
+	text-decoration: line-through;
+}
