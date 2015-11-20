@@ -19,11 +19,13 @@ $(document).ready(function() {
         let $note = $("<div contenteditable></div>").addClass("note").addClass("hidden");
         let $children = $("<div></div>").addClass("children");
         let $bullet = $("<span>&#x02126;</span>").addClass("bullet");
+        // let $expandButton = $("<span>O</span>").addClass("expandButton");
 
         $node.append($value);
         $node.append($note);
         $node.append($children);
         $node.prepend($bullet);
+        // $node.prepend($expandButton);
 
         return $node.clone();
     };
@@ -382,6 +384,14 @@ $(document).ready(function() {
                 }
                 saveData();
             });
+
+            $("#app").on("mouseenter", ".node", function() {
+                console.log("you entered the node!");
+            });
+
+            $("#app").on("mouseleave", ".node", function() {
+                console.log("you entered the node!");
+            });
         };
 
         hoverBullet();
@@ -395,7 +405,7 @@ $(document).ready(function() {
 
             if ($nodeChildren.children(".node").length > 0) {
                 $nodeChildren.toggleClass("hidden");
-                $(node).toggleClass("bullet-clicked");
+                $(node).children(".bullet").toggleClass("bullet-clicked");
             }
         };
 
@@ -440,7 +450,8 @@ $(document).ready(function() {
             $("#app").on("click", ".deleteNote", function() {
                 let $node = $(this).closest(".node");
                 let $note = $(this).closest(".node").children(".note");
-                $note.text("").toggleClass("hidden", true);
+                $note.text("");
+                $note.toggleClass("hidden", true);
                 $node.children(".value").focus();
             });
 
