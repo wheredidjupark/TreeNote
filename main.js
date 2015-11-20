@@ -382,15 +382,15 @@ $(document).ready(function() {
                 saveData();
             });
 
-            // $("#app").on("mouseleave", ".ctrlBar", function() {
-            //     let $node = $(this).closest(".node");
-            //     $node.children(".ctrlBar").remove();
-            //     if (timeoutId) {
-            //         clearTimeout(timeoutId);
-            //         timeoutId = false;
-            //     }
-            //     saveData();
-            // });
+            $("#app").on("mouseleave", ".ctrlBar", function() {
+                let $node = $(this).closest(".node");
+                $node.children(".ctrlBar").remove();
+                if (timeoutId) {
+                    clearTimeout(timeoutId);
+                    timeoutId = false;
+                }
+                saveData();
+            });
 
             // $("#app").on("mouseenter", ".node", function() {
             //     console.log("you entered the node!");
