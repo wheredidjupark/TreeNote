@@ -112,7 +112,7 @@ $(document).ready(function() {
                 let findOneDown = function() {
                     let $childrenNodes = $node.find(".node");
 
-                    if ($childrenNodes.length !== 0) {
+                    if ($childrenNodes.length !== 0 && !$node.children(".children").hasClass("hidden")) {
                         //if children exist
                         return $childrenNodes[0];
                     } else {
