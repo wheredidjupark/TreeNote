@@ -26,7 +26,7 @@ $(document).ready(function() {
         $node.append($children);
         $node.prepend($bullet);
 
-        return $node.clone();
+        return $node;
     };
 
 
@@ -400,9 +400,6 @@ $(document).ready(function() {
                 saveData();
             });
 
-            // $("#app").on("mouseenter", ".node", function() {
-            //     console.log("you entered the node!");
-            // });
 
             $("#app").on("mouseleave", ".node", function() {
                 console.log("you left the node!")
