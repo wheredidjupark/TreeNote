@@ -177,15 +177,16 @@ $(document).ready(function() {
                 if (e.keyCode === KEY_LEFTARROW) {
                     if ($(this).caret() === 0) {
                         e.preventDefault();
-                        let upNode = moveOneUp();
+                        let $upNode = moveOneUp();
 
-                        if (upNode.children(".value").html().toString().length === 0) {
-                            upNode.children(".value").focus();
-                        } else {
+                        if ($upNode.length !== 0) {
+                            if ($upNode.children(".value").html().toString().length === 0) {
+                                $upNode.children(".value").focus();
+                            } else {
+                                $upNode.children(".value").caret(-1);
+                            }
 
-                            upNode.children(".value").caret(-1);
                         }
-
                     }
                 }
 
@@ -196,8 +197,6 @@ $(document).ready(function() {
                     if ($(this).caret() === length) {
                         e.preventDefault();
                         moveOneDown();
-                        // let $nextNodeValue = $node.next().children(".value");
-                        // $nextNodeValue.focus();
                     }
                 }
 
