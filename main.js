@@ -344,16 +344,17 @@ $(document).ready(function() {
                         let $list = $("<ul></ul>");
 
                         let controls = [{
-                            "Complete": "completeTask"
-                        }, {
-                            "Undo Complete": "incompleteTask"
-                        }, {
-                            "Add Note": "addNote"
-                        }, {
-                            "Delete Note": "deleteNote"
-                        }, {
-                            "Delete": "deleteNode"
-                        }];
+                                "Complete": "completeTask"
+                            },
+
+                            {
+                                "Add Note": "addNote"
+                            }, {
+                                "Delete Note": "deleteNote"
+                            }, {
+                                "Delete": "deleteNode"
+                            }
+                        ];
 
                         for (let i = 0; i < controls.length; i++) {
                             let obj = controls[i];
@@ -434,15 +435,7 @@ $(document).ready(function() {
             $("#app").on("click", ".completeTask", function() {
 
                 let $node = $(this).closest(".node");
-                $node.toggleClass("completed", true); //indicate complete tag on node
-
-                saveData();
-            });
-
-
-            $("#app").on("click", ".incompleteTask", function() {
-                let $node = $(this).closest(".node");
-                $node.toggleClass("completed", false);
+                $node.toggleClass("completed"); //indicate complete tag on node
 
                 saveData();
             });
