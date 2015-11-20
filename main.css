@@ -109,6 +109,6 @@ footer {
 	text-decoration: line-through;
 }
 
-.completed .completeTask {
+.completed > .ctrlBar .completeTask {
 	text-decoration: line-through;
 }
