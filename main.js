@@ -251,9 +251,13 @@ $(document).ready(function() {
                         let controls = [{
                             "Complete Task": "completeTask"
                         }, {
+                            "Uncomplete Task": "uncompleteTask"
+                        },{
                             "Add Note": "addNote"
                         }, {
-                            "Delete": "deleteTask"
+                            "Delete Note": "deleteNote"
+                        },{
+                            "Delete": "deleteNode"
                         }];
 
                         for (var i = 0; i < controls.length; i++) {
@@ -317,16 +321,28 @@ $(document).ready(function() {
             $("#app").on("click", ".completeTask", function(){
                 console.log("clicked completeTask!");
                 let $thisNode = $(this).closest(".node");
-                $thisNode.toggleClass("completed"); //indicate complete tag on node
+                $thisNode.addClass("completed"); //indicate complete tag on node
+                // $(this).before($("<li>Undo Complete</li>").addClass("uncompleteTask"))
+                // $(this).remove();
+                saveData();
             });
 
             $("#app").on("click", ".addNote", function(){
                 console.log("clicked addNote!");
             });
 
-            $("#app").on("click", ".deleteTask", function(){
+            $("#app").on("click", ".deleteNode", function(){
                 let $thisNode = $(this).closest(".node");
                 $thisNode.remove();
+                saveData();
+            });
+
+            $("#app").on("click", ".uncompleteTask", function(){
+                let $thisNode = $(this).closest(".node");
+                $thisNode.removeClass("completed");
+                // $(this).before($("<li>Complete Task</li>").addClass("completeTask"));
+                // $(this).remove();
+                saveData();
             });
         };
         clickBullet();
