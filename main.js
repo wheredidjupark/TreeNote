@@ -251,7 +251,7 @@ $(document).ready(function() {
                         let controls = [{
                             "Complete Task": "completeTask"
                         }, {
-                            "Uncomplete Task": "uncompleteTask"
+                            "Undo Complete Task": "incompleteTask"
                         }, {
                             "Add Note": "addNote"
                         }, {
@@ -283,18 +283,26 @@ $(document).ready(function() {
                     clearTimeout(timeoutId);
                     timeoutId = false;
                 }
+
+                saveData();
             });
+
+            // $("#app").on("mouseenter", ".ctrlBar", function() {
+            //     let $thisNode = $(this).closest(".node");
+            // });
 
             $("#app").on("mouseleave", ".ctrlBar", function() {
                 let $thisNode = $(this).closest(".node");
                 $thisNode.children(".ctrlBar").remove();
 
+
+
                 if (timeoutId) {
                     console.log("leaving");
-                    $thisNode.removeClass("highlighted");
                     clearTimeout(timeoutId);
                     timeoutId = false;
                 }
+                saveData();
             });
         };
 
@@ -312,12 +320,12 @@ $(document).ready(function() {
                 $thisNodeChildren.toggleClass("hidden");
                 $(context).toggleClass("bullet-clicked");
             }
-            saveData();
         };
 
         let clickBullet = function() {
             $("#app").on("click", ".bullet", function() {
                 expand(this);
+                saveData();
             });
         };
 
@@ -326,8 +334,8 @@ $(document).ready(function() {
             $("#app").on("click", ".completeTask", function() {
                 console.log("clicked completeTask!");
                 let $thisNode = $(this).closest(".node");
-                $thisNode.addClass("completed"); //indicate complete tag on node
-                // $(this).before($("<li>Undo Complete</li>").addClass("uncompleteTask"))
+                $thisNode.toggleClass("completed", true); //indicate complete tag on node
+                // $(this).before($("<li>Undo Complete</li>").addClass("incompleteTask"))
                 // $(this).remove();
                 saveData();
             });
@@ -342,9 +350,9 @@ $(document).ready(function() {
                 saveData();
             });
 
-            $("#app").on("click", ".uncompleteTask", function() {
+            $("#app").on("click", ".incompleteTask", function() {
                 let $thisNode = $(this).closest(".node");
-                $thisNode.removeClass("completed");
+                $thisNode.toggleClass("completed", false);
                 // $(this).before($("<li>Complete Task</li>").addClass("completeTask"));
                 // $(this).remove();
                 saveData();
