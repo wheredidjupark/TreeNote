@@ -18,11 +18,11 @@
         -ms-user-select: none;
         user-select: none;
     }
-
-    @function nodeValueWidth($appWidth,$appPaddingSide,$margin-left){
+    
+    @function nodeValueWidth($appWidth, $appPaddingSide, $margin-left) {
         @return $appWidth - ($appPaddingSide*2) - $margin-left;
     }
-
+    
     html,
     body {
         width: 100%;
@@ -47,11 +47,10 @@
             }
         }
     }
-
+    
     $appWidth: 800px;
     $appPaddingSide: 40px;
     $appMargin: (25px auto);
-
     #app {
         max-width: 800px;
         margin: $appMargin;
@@ -109,7 +108,7 @@
         .ctrlBar {
             position: absolute;
             top: 15px;
-            // width: 90px;
+            left: -15px;
             padding: 2.5px 5px;
             background-color: #ccc;
             z-index: 10;
