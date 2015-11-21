@@ -18,7 +18,7 @@ $(document).ready(function() {
         let $value = $("<div  contenteditable></div>").addClass("value");
         let $note = $("<div contenteditable></div>").addClass("note").addClass("hidden");
         let $children = $("<div></div>").addClass("children");
-        let $bullet = $("<span>&#x02126;</span>").addClass("bullet");
+        let $bullet = $("<span>&hearts;</span>").addClass("bullet");
 
 
         $node.append($value);
@@ -69,7 +69,7 @@ $(document).ready(function() {
         let keydownValue = function() {
 
             $("#app").on("keydown", ".value", function(e) {
-
+                saveData();
                 // console.log("You pressed the key with the following keycode", e.keyCode);
                 let textVal = $(this).text();
                 let htmlVal = $(this).html();
