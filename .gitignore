@@ -1,4 +1,4 @@
 bower_components/
-styles/.sass-cache
+.sass-cache
 styles/main.css
 styles/main.css.map
