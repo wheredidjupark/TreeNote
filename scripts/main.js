@@ -64,6 +64,16 @@ $(document).ready(function() {
         }
     };
 
+    var toggleExpand = function(node) {
+
+        var $nodeChildren = $(node).children(".children");
+
+        if ($nodeChildren.children(".node").length > 0) {
+            $nodeChildren.toggleClass("hidden");
+            $(node).children(".bullet").toggleClass("bullet-clicked");
+        }
+    };
+
     var keydownEvents = function() {
 
         var keydownValue = function() {
@@ -186,10 +196,15 @@ $(document).ready(function() {
                 };
 
                 //ENTER: Create a new sibling node. Focus on the newly created sibling node.
-                if (e.keyCode === KEY_ENTER) {
+                if (e.keyCode === KEY_ENTER && !e.shiftKey) {
                     e.preventDefault();
                     $node.after(createNode());
                     $node.next().children(".value").focus();
+                }
+
+                if(e.keyCode === KEY_ENTER && e.shiftKey){
+                    e.preventDefault();
+                    toggleExpand($node);
                 }
 
                 //DOWNARROW: focus on the next node
@@ -233,7 +248,7 @@ $(document).ready(function() {
 
                 //DELETE: Remove the node. Focus on the previous node.
                 if (e.keyCode === KEY_DELETE) {
-                    
+
                     if (textVal.toString().length === 0) {
                         e.preventDefault();
                         var childrenNodes = $node.children(".children").children(".node");
@@ -413,16 +428,6 @@ $(document).ready(function() {
     };
 
     var clickEvents = function() {
-
-        var toggleExpand = function(node) {
-
-            var $nodeChildren = $(node).children(".children");
-
-            if ($nodeChildren.children(".node").length > 0) {
-                $nodeChildren.toggleClass("hidden");
-                $(node).children(".bullet").toggleClass("bullet-clicked");
-            }
-        };
 
         //expands the node to reveal its children nodes
         var clickBullet = function() {
