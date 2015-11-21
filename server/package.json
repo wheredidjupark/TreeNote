@@ -1,0 +1,14 @@
+{
+  "name": "worktree-server",
+  "version": "1.0.0",
+  "description": "worktree server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ju Park",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.13.3"
+  }
+}
