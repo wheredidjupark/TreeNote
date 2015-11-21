@@ -233,7 +233,8 @@ $(document).ready(function() {
 
                 //DELETE: Remove the node. Focus on the previous node.
                 if (e.keyCode === KEY_DELETE) {
-                    if (htmlVal.toString().length === 0) {
+                    
+                    if (textVal.toString().length === 0) {
                         e.preventDefault();
                         var childrenNodes = $node.children(".children").children(".node");
                         if (childrenNodes.length === 0) {
