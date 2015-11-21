@@ -2,23 +2,23 @@ $(document).ready(function() {
 
     'use strict';
 
-    let KEY_ENTER = 13;
-    let KEY_DELETE = 8;
-    let KEY_TAB = 9;
-    let KEY_SHIFT = 16;
+    var KEY_ENTER = 13;
+    var KEY_DELETE = 8;
+    var KEY_TAB = 9;
+    var KEY_SHIFT = 16;
 
-    let KEY_LEFTARROW = 37;
-    let KEY_UPARROW = 38;
-    let KEY_RIGHTARROW = 39;
-    let KEY_DOWNARROW = 40;
+    var KEY_LEFTARROW = 37;
+    var KEY_UPARROW = 38;
+    var KEY_RIGHTARROW = 39;
+    var KEY_DOWNARROW = 40;
 
-    let createNode = function() {
+    var createNode = function() {
 
-        let $node = $("<div></div>").addClass("node");
-        let $value = $("<div  contenteditable></div>").addClass("value");
-        let $note = $("<div contenteditable></div>").addClass("note").addClass("hidden");
-        let $children = $("<div></div>").addClass("children");
-        let $bullet = $("<span>&hearts;</span>").addClass("bullet");
+        var $node = $("<div></div>").addClass("node");
+        var $value = $("<div  contenteditable></div>").addClass("value");
+        var $note = $("<div contenteditable></div>").addClass("note").addClass("hidden");
+        var $children = $("<div></div>").addClass("children");
+        var $bullet = $("<span>&hearts;</span>").addClass("bullet");
 
 
         $node.append($value);
@@ -30,8 +30,8 @@ $(document).ready(function() {
     };
 
 
-    let removeNode = function(node) {
-        let $node = $(node);
+    var removeNode = function(node) {
+        var $node = $(node);
         if ($("#app").children().length > 1 || $node.parent().closest(".node").length > 0) {
             $node.remove();
         } else {
@@ -40,16 +40,16 @@ $(document).ready(function() {
     };
 
 
-    let saveData = function() {
-        let data = $("#app").html();
+    var saveData = function() {
+        var data = $("#app").html();
         window.localStorage.setItem('appData', data);
     };
 
-    let getData = function() {
+    var getData = function() {
         return window.localStorage.getItem('appData');
     };
 
-    let initialize = function() {
+    var initialize = function() {
         if (getData()) {
             $("#app").html("");
             $("#app").append(getData());
@@ -58,27 +58,27 @@ $(document).ready(function() {
         }
 
         //implemented as a safeguard in the case the app doesn't contain any content.
-        let appContent = $("#app").text();
+        var appContent = $("#app").text();
         if (appContent.length === 0) {
             $("#app").append(createNode());
         }
     };
 
-    let keydownEvents = function() {
+    var keydownEvents = function() {
 
-        let keydownValue = function() {
+        var keydownValue = function() {
 
             $("#app").on("keydown", ".value", function(e) {
                 saveData();
                 // console.log("You pressed the key with the following keycode", e.keyCode);
-                let textVal = $(this).text();
-                let htmlVal = $(this).html();
-                let $node = $(this).closest(".node");
+                var textVal = $(this).text();
+                var htmlVal = $(this).html();
+                var $node = $(this).closest(".node");
 
                 //finds the nearest previous sibling node or closest parent node
-                let findOneUp = function(node) {
+                var findOneUp = function(node) {
                     // $node = node || $node;
-                    let $adjacent = $node.prev();
+                    var $adjacent = $node.prev();
 
                     if ($adjacent.length === 0) {
                         //if thisNode does not have an older sibling, return the current node's parent
@@ -86,8 +86,8 @@ $(document).ready(function() {
                         return $node.parent().closest(".node");
                     } else {
                         //has an older sibling
-                        let childrenNodes = $adjacent.children(".children").children(".node");
-                        let children = $adjacent.children(".children");
+                        var childrenNodes = $adjacent.children(".children").children(".node");
+                        var children = $adjacent.children(".children");
 
 
                         if (childrenNodes.length === 0 || $(children).hasClass("hidden")) {
@@ -97,11 +97,11 @@ $(document).ready(function() {
                             //the older sibling has children.
 
                             //the number of children node
-                            let length = $adjacent.children(".children").children(".node").length;
+                            var length = $adjacent.children(".children").children(".node").length;
                             //the last chlid node (i.e. adjacent node)
                             $adjacent = $adjacent.children(".children").children(".node")[length - 1];
                             //the last child's div element that keeps children node
-                            let $curChildren = $($adjacent).children(".children");
+                            var $curChildren = $($adjacent).children(".children");
 
                             while ($($adjacent).children(".children").children(".node").length > 0 && !$curChildren.hasClass("hidden")) {
                                 //the number of children nodes in the adjacent node
@@ -119,24 +119,24 @@ $(document).ready(function() {
                 };
 
 
-                let findOneDown = function(node) {
+                var findOneDown = function(node) {
                     $node = node || $node;
-                    let $childrenNodes = $node.find(".node");
+                    var $childrenNodes = $node.find(".node");
 
                     if ($childrenNodes.length !== 0 && !$node.children(".children").hasClass("hidden")) {
                         //if children exist
                         return $childrenNodes[0];
                     } else {
                         //if child doesn't exist, look into its sibling.
-                        let $nextNode = $node.next();
+                        var $nextNode = $node.next();
                         if ($nextNode.length > 0) {
                             // return nextNode, node's sibling.
                             return $nextNode;
                         } else {
                             //if the sibling does not exist, then move to its parent's sibling
                             // console.log("parent's sibling");
-                            let $parent = $node.parent().closest(".node");
-                            let $parentSibling = $parent.next();
+                            var $parent = $node.parent().closest(".node");
+                            var $parentSibling = $parent.next();
                             while ($parentSibling.length === 0) {
                                 //if sibling doesn't exist
                                 if ($parent.length === 0) {
@@ -157,8 +157,8 @@ $(document).ready(function() {
                 // console.log("node's adjacentDown value: ", $(findOneDown()).children(".value").text());
 
 
-                let moveOneUp = function() {
-                    let $upNode = $(findOneUp());
+                var moveOneUp = function() {
+                    var $upNode = $(findOneUp());
                     if ($upNode.length !== 0) {
                         if ($upNode.children(".value").html().toString().length === 0) {
                             $upNode.children(".value").focus();
@@ -170,8 +170,8 @@ $(document).ready(function() {
                     return $upNode;
                 };
 
-                let moveOneDown = function() {
-                    let $downNode = $(findOneDown());
+                var moveOneDown = function() {
+                    var $downNode = $(findOneDown());
                     if ($downNode.length !== 0) {
                         if ($downNode.children(".value").html().toString().length === 0) {
                             $downNode.children(".value").focus();
@@ -208,7 +208,7 @@ $(document).ready(function() {
                 if (e.keyCode === KEY_LEFTARROW) {
                     if ($(this).caret() === 0) {
                         e.preventDefault();
-                        let $upNode = moveOneUp();
+                        var $upNode = moveOneUp();
 
                         if ($upNode.length !== 0) {
                             if ($upNode.children(".value").html().toString().length === 0) {
@@ -224,7 +224,7 @@ $(document).ready(function() {
                 //RIGHT ARROW + caret at end: move to the next node.
                 if (e.keyCode === KEY_RIGHTARROW) {
 
-                    let length = $(this).text().length;
+                    var length = $(this).text().length;
                     if ($(this).caret() === length) {
                         e.preventDefault();
                         moveOneDown();
@@ -235,7 +235,7 @@ $(document).ready(function() {
                 if (e.keyCode === KEY_DELETE) {
                     if (htmlVal.toString().length === 0) {
                         e.preventDefault();
-                        let childrenNodes = $node.children(".children").children(".node");
+                        var childrenNodes = $node.children(".children").children(".node");
                         if (childrenNodes.length === 0) {
 
                             //if there's more than one main node & the node has a parent node
@@ -252,7 +252,7 @@ $(document).ready(function() {
 
                         } else {
                             // window.alert("There are children in the node");
-                            console.log("Cannot delete node; the node contains at least one child node")
+                            console.log("Cannot delete node; the node contains at least one child node");
                         }
                     }
 
@@ -277,8 +277,8 @@ $(document).ready(function() {
                 if (e.keyCode === KEY_TAB && !e.shiftKey) {
                     e.preventDefault();
 
-                    let $prevNode = $node.prev();
-                    let $prevNodeChildren = $node.prev().children(".children");
+                    var $prevNode = $node.prev();
+                    var $prevNodeChildren = $node.prev().children(".children");
 
                     $prevNodeChildren.append($node);
 
@@ -295,7 +295,7 @@ $(document).ready(function() {
 
                 if (e.keyCode === KEY_TAB && e.shiftKey) {
                     e.preventDefault();
-                    let $parentNode = $node.parent().closest(".node");
+                    var $parentNode = $node.parent().closest(".node");
                     $parentNode.after($node);
                     $(this).focus();
 
@@ -307,10 +307,10 @@ $(document).ready(function() {
             });
         };
 
-        let keydownNote = function() {
+        var keydownNote = function() {
             $("#app").on("keydown", ".note", function(e) {
-                let html = $(this).html();
-                let $node = $(this).closest(".node");
+                var html = $(this).html();
+                var $node = $(this).closest(".node");
 
                 if (e.keyCode === KEY_DELETE) {
 
@@ -334,24 +334,24 @@ $(document).ready(function() {
         keydownNote();
     };
 
-    let hoverEvents = function() {
+    var hoverEvents = function() {
 
 
-        let hoverBullet = function() {
-            let timeoutId = false;
+        var hoverBullet = function() {
+            var timeoutId = false;
 
             $("#app").on("mouseenter", ".bullet", function() {
-                let $node = $(this).closest(".node");
+                var $node = $(this).closest(".node");
                 // let childrenNode = $node.find(".node");
 
                 if (!timeoutId) {
                     timeoutId = setTimeout(function() {
 
                         $node.addClass("highlighted");
-                        let $menubar = $("<div></div>").addClass("ctrlBar");
-                        let $list = $("<ul></ul>");
+                        var $menubar = $("<div></div>").addClass("ctrlBar");
+                        var $list = $("<ul></ul>");
 
-                        let controls = [{
+                        var controls = [{
                                 "Complete": "completeTask"
                             },
 
@@ -364,10 +364,10 @@ $(document).ready(function() {
                             }
                         ];
 
-                        for (let i = 0; i < controls.length; i++) {
-                            let obj = controls[i];
-                            for (let key in obj) {
-                                let $item = $("<li>" + key + "</li>").addClass(obj[key]);
+                        for (var i = 0; i < controls.length; i++) {
+                            var obj = controls[i];
+                            for (var key in obj) {
+                                var $item = $("<li>" + key + "</li>").addClass(obj[key]);
                                 $list.append($item);
                             }
                         }
@@ -379,7 +379,7 @@ $(document).ready(function() {
             });
 
             $("#app").on("mouseleave", ".bullet", function() {
-                let $node = $(this).closest(".node");
+                var $node = $(this).closest(".node");
 
                 if (timeoutId) {
                     $node.removeClass("highlighted");
@@ -391,7 +391,7 @@ $(document).ready(function() {
             });
 
             $("#app").on("mouseleave", ".ctrlBar", function() {
-                let $node = $(this).closest(".node");
+                var $node = $(this).closest(".node");
                 $node.children(".ctrlBar").remove();
                 if (timeoutId) {
                     clearTimeout(timeoutId);
@@ -402,8 +402,8 @@ $(document).ready(function() {
 
 
             $("#app").on("mouseleave", ".node", function() {
-                console.log("you left the node!")
-                let $node = $(this);
+                console.log("you left the node!");
+                var $node = $(this);
                 $node.children(".ctrlBar").remove();
             });
         };
@@ -411,11 +411,11 @@ $(document).ready(function() {
         hoverBullet();
     };
 
-    let clickEvents = function() {
+    var clickEvents = function() {
 
-        let toggleExpand = function(node) {
+        var toggleExpand = function(node) {
 
-            let $nodeChildren = $(node).children(".children");
+            var $nodeChildren = $(node).children(".children");
 
             if ($nodeChildren.children(".node").length > 0) {
                 $nodeChildren.toggleClass("hidden");
@@ -424,9 +424,9 @@ $(document).ready(function() {
         };
 
         //expands the node to reveal its children nodes
-        let clickBullet = function() {
+        var clickBullet = function() {
             $("#app").on("click", ".bullet", function() {
-                let $node = $(this).closest(".node");
+                var $node = $(this).closest(".node");
                 toggleExpand($node);
                 saveData();
                 $node.children(".value").focus();
@@ -435,28 +435,28 @@ $(document).ready(function() {
         };
 
         //completes the given task
-        let clickCtrlBar = function() {
+        var clickCtrlBar = function() {
             //complete task toggles
             $("#app").on("click", ".completeTask", function() {
 
-                let $node = $(this).closest(".node");
+                var $node = $(this).closest(".node");
                 $node.toggleClass("completed"); //indicate complete tag on node
 
                 saveData();
             });
 
             $("#app").on("click", ".addNote", function() {
-                let $node = $(this).closest(".node");
+                var $node = $(this).closest(".node");
 
-                let $note = $(this).closest(".node").children(".note");
+                var $note = $(this).closest(".node").children(".note");
                 $note.toggleClass("hidden", false);
                 $node.children(".ctrlBar").remove();
                 $note.focus();
             });
 
             $("#app").on("click", ".deleteNote", function() {
-                let $node = $(this).closest(".node");
-                let $note = $(this).closest(".node").children(".note");
+                var $node = $(this).closest(".node");
+                var $note = $(this).closest(".node").children(".note");
                 $note.text("");
                 $note.toggleClass("hidden", true);
                 $node.children(".ctrlBar").remove();
@@ -465,7 +465,7 @@ $(document).ready(function() {
             });
 
             $("#app").on("click", ".deleteNode", function() {
-                let node = $(this).closest(".node");
+                var node = $(this).closest(".node");
                 removeNode(node);
                 saveData();
             });
