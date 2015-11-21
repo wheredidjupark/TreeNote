@@ -33,8 +33,13 @@
         a {
             font-family: "Curlz MT";
             font-size: 30px;
+            @include selectable(none);
             &:hover {
                 text-decoration: none;
+            }
+            &:focus{
+                text-decoration: none;
+                outline: none;
             }
         }
     }
@@ -124,4 +129,5 @@
         font-family: Helvetica;
         text-align: center;
         font-size: 10px;
+        @include selectable(none);
     }
