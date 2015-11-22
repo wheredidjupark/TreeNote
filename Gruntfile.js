@@ -24,14 +24,34 @@ module.exports = function(grunt) {
         },
         jshint: {
             src: ["Gruntfile.js", "client/scripts/main.js", "server/server.js"]
+        },
+        nodemon: {
+            main: {
+                script: "server/server.js"
+            }
+        },
+        watch: {
+            sass: {
+                files: ["client/styles/main.scss"],
+                tasks: ["sass", "cssmin"]
+            },
+            scripts: {
+                files: ["client/scripts/main.js"],
+                tasks: ["uglify"]
+            },
+            server: {
+                files: ["server/server.js"],
+                tasks: ["nodemon"]
+            }
+        },
+        concurrent: {
+            target1: ["watch", "nodemon"]
         }
-
-
     });
 
 
 
-    grunt.registerTask('default', ['uglify', 'sass', 'cssmin']);
+    grunt.registerTask('default', ['uglify', 'sass', 'cssmin', "concurrent:target1"]);
     grunt.registerTask("build", ['uglify', 'sass', 'cssmin']);
 
 };

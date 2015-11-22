@@ -227,7 +227,7 @@ $(document).ready(function() {
                 };
 
                 //ENTER: Create a new sibling node. Focus on the newly created sibling node.
-                if (e.keyCode === KEY_ENTER && !e.shiftKey && !e.ctrlKey) {
+                if (e.keyCode === KEY_ENTER && !e.shiftKey && !e.metaKey) {
                     e.preventDefault();
                     $node.after(createNode());
                     $node.next().children(".value").focus();
@@ -238,7 +238,7 @@ $(document).ready(function() {
                     toggleExpand($node);
                 }
 
-                if(e.keyCode === KEY_ENTER && e.ctrlKey){
+                if(e.keyCode === KEY_ENTER && e.metaKey){
                     e.preventDefault();
                     $node.toggleClass("completed");
                 }
