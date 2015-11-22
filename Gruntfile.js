@@ -27,7 +27,14 @@ module.exports = function(grunt) {
         },
         nodemon: {
             main: {
-                script: "server/server.js"
+                script: "server/server.js",
+                options: {
+                    callback: function(nodemon) {
+                        nodemon.on("restart", function() {
+                            console.log("Restarting server:");
+                        });
+                    }
+                }
             }
         },
         watch: {
@@ -38,14 +45,13 @@ module.exports = function(grunt) {
             scripts: {
                 files: ["client/scripts/main.js"],
                 tasks: ["uglify"]
-            },
-            server: {
-                files: ["server/server.js"],
-                tasks: ["nodemon"]
             }
         },
         concurrent: {
-            target1: ["watch", "nodemon"]
+            target1: ["watch", "nodemon"],
+            options: {
+                logConcurrentOutput: true
+            }
         }
     });
 
