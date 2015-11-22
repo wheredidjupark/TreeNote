@@ -23,7 +23,7 @@ app.get("/", function(req, res) {
     res.end();
 });
 
-var dataRouter = require("./router/dataRouter")(appData);
+var dataRouter = require("./routers/dataRouter")(appData);
 app.use("/data", dataRouter);
 
 var listener = app.listen(port, "localhost", function() {
