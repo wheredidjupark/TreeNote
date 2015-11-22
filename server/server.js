@@ -36,6 +36,6 @@ app.post("/data", function(req, res) {
     res.end();
 });
 
-app.listen(4000, "localhost", function() {
-    console.log("server running at 4000");
+var listener = app.listen(4000, "localhost", function() {
+    console.log("server running at", listener.address(), listener.address().port);
 });

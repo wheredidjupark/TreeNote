@@ -42,41 +42,41 @@ $(document).ready(function() {
 
     var saveData = function() {
         var appData = $("#app").html();
-        // window.localStorage.setItem('appData', data);
+        window.localStorage.setItem('appData', appData);
 
-        $.ajax({
-            url: "/data",
-            method: "POST",
-            data: appData,
-            dataType: "html",
-            success: function(data, status, jqXHR) {
-                console.log(data);
-                // console.log(status);
-            },
-            error: function(jqXHR, status, error) {
-                console.log(status, error);
-            }
+        // $.ajax({
+        //     url: "/data",
+        //     method: "POST",
+        //     data: appData,
+        //     dataType: "html",
+        //     success: function(data, status, jqXHR) {
+        //         console.log(data);
+        //         // console.log(status);
+        //     },
+        //     error: function(jqXHR, status, error) {
+        //         console.log(status, error);
+        //     }
 
-        });
+        // });
     };
 
     var getData = function() {
-        // return window.localStorage.getItem('appData');
+        return window.localStorage.getItem('appData');
 
-        var result;
-        $.ajax({
-            url: "/data",
-            method: "GET",
-            success: function(data, status, jqXHR) {
-                result = data;
-                return result;
-            },
-            error: function(jqXHR, status, error) {
-                console.log(jqXHR, status, error);
-            }
-        });
+        // var result;
+        // $.ajax({
+        //     url: "/data",
+        //     method: "GET",
+        //     success: function(data, status, jqXHR) {
+        //         result = data;
+        //         return result;
+        //     },
+        //     error: function(jqXHR, status, error) {
+        //         console.log(jqXHR, status, error);
+        //     }
+        // });
 
-        return result;
+        // return result;
     };
 
     var initialize = function() {
