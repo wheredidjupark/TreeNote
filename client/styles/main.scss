@@ -48,11 +48,11 @@
         }
     }
     
-    $appWidth: 800px;
+    $appWidth: 700px;
     $appPaddingSide: 40px;
     $appMargin: (25px auto);
     #app {
-        max-width: 800px;
+        max-width: $appWidth;
         margin: $appMargin;
         background-color: white;
         padding: 35px 40px;
@@ -84,7 +84,7 @@
                 cursor: pointer;
             }
             &.bullet-clicked {
-                background-color: orange;
+                color: red;
             }
         }
         .value {
