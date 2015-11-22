@@ -41,12 +41,42 @@ $(document).ready(function() {
 
 
     var saveData = function() {
-        var data = $("#app").html();
-        window.localStorage.setItem('appData', data);
+        var appData = $("#app").html();
+        // window.localStorage.setItem('appData', data);
+
+        $.ajax({
+            url: "/data",
+            method: "POST",
+            data: appData,
+            dataType: "html",
+            success: function(data, status, jqXHR) {
+                console.log(data);
+                // console.log(status);
+            },
+            error: function(jqXHR, status, error) {
+                console.log(status, error);
+            }
+
+        });
     };
 
     var getData = function() {
-        return window.localStorage.getItem('appData');
+        // return window.localStorage.getItem('appData');
+
+        var result;
+        $.ajax({
+            url: "/data",
+            method: "GET",
+            success: function(data, status, jqXHR) {
+                result = data;
+                return result;
+            },
+            error: function(jqXHR, status, error) {
+                console.log(jqXHR, status, error);
+            }
+        });
+
+        return result;
     };
 
     var initialize = function() {
@@ -78,8 +108,8 @@ $(document).ready(function() {
 
         var keydownValue = function() {
 
+
             $("#app").on("keydown", ".value", function(e) {
-                saveData();
                 // console.log("You pressed the key with the following keycode", e.keyCode);
                 var textVal = $(this).text();
                 var htmlVal = $(this).html();
@@ -202,7 +232,7 @@ $(document).ready(function() {
                     $node.next().children(".value").focus();
                 }
 
-                if(e.keyCode === KEY_ENTER && e.shiftKey){
+                if (e.keyCode === KEY_ENTER && e.shiftKey) {
                     e.preventDefault();
                     toggleExpand($node);
                 }
@@ -316,10 +346,11 @@ $(document).ready(function() {
                     $(this).focus();
 
                 }
-                //ENTER + Nothing in the node: Same functionality as REVERSE TAB (see above)
-                // if (e.keyCode === KEY_ENTER && htmlVal.toString().length === 0) {}
 
                 saveData();
+
+                //ENTER + Nothing in the node: Same functionality as REVERSE TAB (see above)
+                // if (e.keyCode === KEY_ENTER && htmlVal.toString().length === 0) {}
             });
         };
 
@@ -335,14 +366,14 @@ $(document).ready(function() {
                         $(this).toggleClass("hidden", true);
                         $node.children(".value").caret(-1);
                     }
-                    saveData();
                 }
 
                 if (e.keyCode === KEY_ENTER) {
                     e.preventDefault();
-                    saveData();
                     $node.children(".value").focus();
                 }
+
+                saveData();
             });
         };
 

@@ -1,8 +1,41 @@
 var express = require("express");
+var bodyParser = require("body-parser");
 var app = express();
 
-app.use(express.static("../client"));
+app.use("/", express.static("../client"));
 
-app.listen(4000, function(){
-	console.log("server running at 4000");
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+
+app.use(bodyParser.text({
+    type: "text/html"
+}));
+
+
+var data;
+
+
+app.get("/", function(req,res){
+	res.end();
+});
+
+app.get("/data", function(req, res) {
+    res.send(data);
+    console.log(data);
+});
+
+
+app.post("/data", function(req, res) {
+
+    // console.log(req.url);
+
+    data = req.body;
+    console.log(data);
+    res.sendStatus(200);
+    res.end();
+});
+
+app.listen(4000, "localhost", function() {
+    console.log("server running at 4000");
 });
