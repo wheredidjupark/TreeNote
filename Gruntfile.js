@@ -21,15 +21,17 @@ module.exports = function(grunt) {
                 src: "client/styles/main.css",
                 dest: "client/styles/main.min.css"
             }
+        },
+        jshint: {
+            src: ["Gruntfile.js", "client/scripts/main.js", "server/server.js"]
         }
+
 
     });
 
 
-        // jshint: {
-        //     src: ["Gruntfile.js", "client/scripts/main.js"]
-        // }
-    grunt.registerTask('default', ['uglify',  'sass', 'cssmin']);
+
+    grunt.registerTask('default', ['uglify', 'sass', 'cssmin']);
     grunt.registerTask("build", ['uglify', 'sass', 'cssmin']);
 
 };
