@@ -1,33 +1,31 @@
 var express = require("express");
+// var mongoose = require("mongoose");
 var bodyParser = require("body-parser");
 var app = express();
+// var db = mongoose.connect('mongodb://localhost/worktree');
 
-app.use("/", express.static(__dirname + "/../client"));
 
-app.use(bodyParser.urlencoded({
-    extended: true
-}));
+var port = process.env.PORT || 4000;
 
+
+//use body-parser
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
+//serving static files at root
+app.use("/", express.static(__dirname + "/../client"));
 
-var appData;
 
-app.get("/", function(req,res){
-	res.end();
+//our database (for now it's an object)
+var appData = {};
+
+app.get("/", function(req, res) {
+    res.end();
 });
 
-app.get("/data", function(req, res) {
-    res.send(appData);
+var dataRouter = require("./router/dataRouter")(appData);
+app.use("/data", dataRouter);
 
-});
-
-
-app.post("/data", function(req, res) {
-    appData = req.body;
-    res.sendStatus(201);
-});
-
-var listener = app.listen(4000, "localhost", function() {
+var listener = app.listen(port, "localhost", function() {
     console.log("server running at", listener.address());
 });
