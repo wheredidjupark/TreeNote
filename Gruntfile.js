@@ -43,8 +43,8 @@ module.exports = function(grunt) {
                 tasks: ["sass", "cssmin"]
             },
             scripts: {
-                files: ["client/scripts/main.js"],
-                tasks: ["uglify"]
+                files: ["Gruntfile.js","client/scripts/main.js", "server/server.js"],
+                tasks: ["jshint","uglify"]
             }
         },
         concurrent: {
