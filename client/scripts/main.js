@@ -32,7 +32,8 @@ $(document).ready(function() {
 
     var removeNode = function(node) {
         var $node = $(node);
-        if ($("#app").children().length > 1 || $node.parent().closest(".node").length > 0) {
+        //if the node has a parent node OR if the app has more than one primary node
+        if ($("#app").children(".node").length > 1 || $node.parent().closest(".node").length > 0) {
             $node.remove();
         } else {
             console.log("Cannot delete node; the app must contain at least one primary node");
@@ -41,59 +42,61 @@ $(document).ready(function() {
 
 
     var saveData = function() {
-        var appData = $("#app").html();
-        window.localStorage.setItem('appData', appData);
+        var appData = $("#app").html().toString();
 
-        // $.ajax({
-        //     url: "/data",
-        //     method: "POST",
-        //     data: appData,
-        //     dataType: "html",
-        //     success: function(data, status, jqXHR) {
-        //         console.log(data);
-        //         // console.log(status);
-        //     },
-        //     error: function(jqXHR, status, error) {
-        //         console.log(status, error);
-        //     }
+        $.ajax({
+            url: "/data",
+            method: "POST",
+            data: {
+                app: appData
+            },
+            success: function(data, status, jqXHR) {
+                console.log(data);
+            },
+            error: function(jqXHR, status, error) {
+                    console.log(status, error);
+                    window.localStorage.setItem('appData', appData);
+                }
+                // dataType: "json" causes parseerror....
+        });
+    };
 
-        // });
+    var getLocalData = function() {
+        return window.localStorage.getItem("appData");
     };
 
     var getData = function() {
-        return window.localStorage.getItem('appData');
+        // return window.localStorage.getItem('appData');
+        var appData;
 
-        // var result;
-        // $.ajax({
-        //     url: "/data",
-        //     method: "GET",
-        //     success: function(data, status, jqXHR) {
-        //         result = data;
-        //         return result;
-        //     },
-        //     error: function(jqXHR, status, error) {
-        //         console.log(jqXHR, status, error);
-        //     }
-        // });
+        var result = false;
+        $.ajax({
+            url: "/data",
+            method: "GET",
+            success: function(data, status, jqXHR) {
+                result = true;
+                if (!data.app || data.app.length === 0) {
+                    $("#app").append(createNode());
+                }
+                appData = $.parseHTML(data.app);
+                console.log(appData);
+                $("#app").append(appData);
+            },
+            error: function(jqXHR, status, error) {
+                console.log(jqXHR, status, error);
+                result = false;
+                if (getLocalData()) {
+                    $("#app").append($(getLocalData));
+                } else {
 
-        // return result;
+                    $("#app").append(createNode());
+                }
+            }
+        });
+
+        return result;
     };
-
-    var initialize = function() {
-        if (getData()) {
-            $("#app").html("");
-            $("#app").append(getData());
-        } else {
-            $("#app").append(createNode());
-        }
-
-        //implemented as a safeguard in the case the app doesn't contain any content.
-        var appContent = $("#app").text();
-        if (appContent.length === 0) {
-            $("#app").append(createNode());
-        }
-    };
-
+    
     var toggleExpand = function(node) {
 
         var $nodeChildren = $(node).children(".children");
@@ -110,6 +113,7 @@ $(document).ready(function() {
 
 
             $("#app").on("keydown", ".value", function(e) {
+
                 // console.log("You pressed the key with the following keycode", e.keyCode);
                 var textVal = $(this).text();
                 var htmlVal = $(this).html();
@@ -226,7 +230,7 @@ $(document).ready(function() {
                 };
 
                 //ENTER: Create a new sibling node. Focus on the newly created sibling node.
-                if (e.keyCode === KEY_ENTER && !e.shiftKey) {
+                if (e.keyCode === KEY_ENTER && !e.shiftKey && !e.metaKey) {
                     e.preventDefault();
                     $node.after(createNode());
                     $node.next().children(".value").focus();
@@ -235,6 +239,11 @@ $(document).ready(function() {
                 if (e.keyCode === KEY_ENTER && e.shiftKey) {
                     e.preventDefault();
                     toggleExpand($node);
+                }
+
+                if (e.keyCode === KEY_ENTER && e.metaKey) {
+                    e.preventDefault();
+                    $node.toggleClass("completed");
                 }
 
                 //DOWNARROW: focus on the next node
@@ -346,6 +355,8 @@ $(document).ready(function() {
                     $(this).focus();
 
                 }
+
+
 
                 saveData();
 
@@ -512,7 +523,8 @@ $(document).ready(function() {
         clickCtrlBar();
     };
 
-    initialize();
+    // initialize();
+    getData();
     keydownEvents();
     hoverEvents();
     clickEvents();

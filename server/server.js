@@ -1,43 +1,31 @@
-"use strict";
-
 var express = require("express");
+// var mongoose = require("mongoose");
 var bodyParser = require("body-parser");
 var app = express();
+// var db = mongoose.connect('mongodb://localhost/worktree');
 
+
+var port = process.env.PORT || 4000;
+
+
+//use body-parser
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
+
+//serving static files at root
 app.use("/", express.static(__dirname + "/../client"));
 
-app.use(bodyParser.urlencoded({
-    extended: true
-}));
 
-app.use(bodyParser.text({
-    type: "text/html"
-}));
+//our database (for now it's an object)
+var appData = {};
 
-
-var data;
-
-
-app.get("/", function(req,res){
-	res.end();
-});
-
-app.get("/data", function(req, res) {
-    res.send(data);
-    console.log(data);
-});
-
-
-app.post("/data", function(req, res) {
-
-    // console.log(req.url);
-
-    data = req.body;
-    console.log(data);
-    res.sendStatus(200);
+app.get("/", function(req, res) {
     res.end();
 });
 
-var listener = app.listen(4000, "localhost", function() {
+var dataRouter = require("./routers/dataRouter")(appData);
+app.use("/data", dataRouter);
+
+var listener = app.listen(port, "localhost", function() {
     console.log("server running at", listener.address());
 });

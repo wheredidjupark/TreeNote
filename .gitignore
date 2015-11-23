@@ -1,5 +1,7 @@
 **bower_components/
 .sass-cache
-*/styles/main.css
-*/styles/main.css.map
+**main.css
+**main.min.css
+**main.css.map
 **node_modules/
+**main.min.js
